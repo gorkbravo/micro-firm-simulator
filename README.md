@@ -5,7 +5,7 @@ Interactive teaching activity for Microeconomics I, built around Varian-style fi
 ## Contents
 
 - `micro-firm-simulator.html`: current working simulator for the classroom activity.
-- `index.html`: older standalone version kept for reference.
+- `index.html`: same current simulator, kept in sync so GitHub Pages/root opening uses the right version.
 - `docs/guion-operativo.md`: classroom flow, timing, round mechanics, scoring rules, debrief prompts, and pre-class checklist.
 - `materials/`: source lecture presentations used to align the rounds.
 - `AGENTS.md`: orientation and editing guide for future coding agents.
