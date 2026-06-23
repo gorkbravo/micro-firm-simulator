@@ -3,94 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Micro Firm Simulator - Empresas Dominicanas</title>
-  <style>
-    body{font-family:Inter,system-ui,sans-serif;margin:20px;background:#f4f6f8;color:#17202a}
-    section{background:#fff;border:1px solid #d8dee8;border-radius:8px;padding:14px;margin:12px 0;box-shadow:0 8px 24px rgba(23,32,42,.08)}
-    button,input,select{font:inherit;margin:2px}button{border:1px solid #d8dee8;background:#fff;border-radius:8px;padding:8px 10px;cursor:pointer;font-weight:750}button:hover{border-color:#9aa8bb}
-    table{border-collapse:collapse;width:100%;font-size:14px}td,th{border-bottom:1px solid #d8dee8;padding:8px;vertical-align:top;text-align:left}th{background:#eef3f8;color:#667085;text-transform:uppercase;font-size:12px}
-    input[type=number]{width:64px}.grid{display:grid;grid-template-columns:340px minmax(0,1fr);gap:16px}.timer{font-size:48px;font-weight:950;font-variant-numeric:tabular-nums}.ok{color:#15803d;font-weight:850}.bad{color:#be123c;font-weight:850}.mid{color:#b45309;font-weight:850}.note{color:#667085;line-height:1.4}.admin,.test{display:none}body.admin .admin,body.test .test{display:block}body.admin td.admin,body.admin th.admin{display:table-cell}.controls label{display:block;margin:8px 0}.rank p,.log-item{border:1px solid #d8dee8;border-radius:8px;padding:8px;margin:6px 0;background:#fff}.decision{min-width:150px}@media(max-width:900px){.grid{grid-template-columns:1fr}}
-  </style>
+  <meta http-equiv="refresh" content="0; url=micro-firm-simulator.html">
+  <title>Micro Firm Simulator</title>
+  <script>window.location.replace('micro-firm-simulator.html');</script>
 </head>
 <body>
-  <h1>Micro Firm Simulator</h1>
-  <p class="note">Empresas dominicanas simuladas. Cada ronda dura 4 minutos y tiene una decision distinta. Las funciones oficiales quedan ocultas hasta Admin.</p>
-  <p><button onclick="setView('live')">Live</button><button onclick="setView('test')">Test</button><button onclick="setView('admin')">Admin</button></p>
-  <main class="grid">
-    <aside>
-      <section>
-        <h2 id="roundName"></h2>
-        <p><b>Material:</b> <span id="roundMaterial"></span></p>
-        <p><b>Objetivo:</b> <span id="roundObjective"></span></p>
-        <p><b>Decision:</b> <span id="roundDecision"></span></p>
-        <p><b>Debrief:</b> <span id="roundDebrief"></span></p>
-        <div class="timer" id="clock">04:00</div>
-        <p><button onclick="startTimer()">Iniciar</button><button onclick="pauseTimer()">Pausar</button><button onclick="resetTimer(true)">Reset</button></p>
-        <p><button onclick="goRound(roundIndex-1)">Anterior</button><button onclick="goRound(roundIndex+1)">Siguiente</button><button onclick="goRound(roundIndex)">Aplicar escenario</button></p>
-      </section>
-      <section>
-        <h2>Escenario</h2>
-        <div class="controls" id="controls"></div>
-        <p><button onclick="shock('labor')">Trabajo caro</button><button onclick="shock('capital')">Capital caro</button><button onclick="shock('order')">Orden grande</button><button onclick="shock('reset')">Reset mercado</button></p>
-        <p class="note">Score = 100 x C* / coste equivalente. El feedback evalua la decision conceptual de la ronda.</p>
-      </section>
-    </aside>
-    <div>
-      <section>
-        <h2>Decisiones de equipos</h2>
-        <table>
-          <thead><tr><th>Grupo</th><th>Empresa</th><th>Decision</th><th>L</th><th>K</th><th>Q</th><th>Coste</th><th>CMe</th><th>Beneficio</th><th>Score</th><th>Feedback</th><th class="admin">Funcion / optimo</th></tr></thead>
-          <tbody id="teamRows"></tbody>
-        </table>
-        <p><button onclick="fillNearOptimal()">Cargar cerca optimo</button><button onclick="randomizeTeams()">Randomizar</button><button onclick="resetTeams()">Reset equipos</button></p>
-      </section>
-      <section><h2>Ranking</h2><div class="rank" id="ranking"></div></section>
-      <section class="test"><h2>Diagnostics</h2><button onclick="runDiagnostics()">Run diagnostics</button><div id="diagnostics"></div></section>
-      <section><h2>Registro</h2><div id="logBox"></div></section>
-    </div>
-  </main>
-  <script>
-    const ROUND_SECONDS=240;
-    const marketDefs=[['w',4,20,10,1,'Salario w'],['r',4,20,10,1,'Renta del capital r'],['q',60,260,150,5,'Output objetivo Q'],['p',1,20,4,.1,'Precio output p'],['F',0,600,0,10,'Coste fijo F']];
-    const firms=[
-      {g:1,n:'La Aurora',desc:'Puros: torcedores expertos y control manual.',A:8,a:.70,b:.30,L:18,K:10,D:{}},
-      {g:2,n:'Induban',desc:'Cafe industrial: tostado, molienda, empaque y maquinaria.',A:10,a:.35,b:.65,L:12,K:18,D:{}},
-      {g:3,n:'Central Romana',desc:'Azucar: molinos, refineria, transporte y planta pesada.',A:9,a:.40,b:.60,L:13,K:17,D:{}},
-      {g:4,n:'Pollo Cibao',desc:'Avicola industrial: galpones, refrigeracion y bioseguridad.',A:11,a:.30,b:.70,L:10,K:20,D:{}},
-      {g:5,n:'Grupo Puntacana',desc:'Resort: capital hotelero con servicio humano clave.',A:12,a:.55,b:.45,L:17,K:14,D:{}},
-      {g:6,n:'Ron Barcelo/Brugal',desc:'Destileria, barricas, embotellado e inventario envejecido.',A:10,a:.25,b:.75,L:8,K:22,D:{}}
-    ];
-    const rounds=[
-      {title:'Mapa tecnologico de la empresa',material:'Unidad XI - Tecnologia, isocuantas, Cobb-Douglas y RTS',objective:'Leer el booklet, inferir intensidad L/K y proponer A, alpha y beta.',decision:'Perfil tecnologico',options:[['labor','Trabajo intensivo'],['capital','Capital intensivo'],['balanced','Balanceada']],w:10,r:10,q:120,p:4,F:0,debrief:'Que pista concreta justifica alpha o beta alto?'},
-      {title:'Beneficio: aceptar o rechazar la orden',material:'Unidad XII - Beneficio, coste economico e isobeneficio',objective:'Usar pi = pQ - C para decidir si producir conviene.',decision:'Orden comercial',options:[['accept','Aceptar'],['reject','Rechazar']],w:10,r:10,q:180,p:3.2,F:220,debrief:'Que cambia si ignoramos coste de oportunidad?'},
-      {title:'Isocuanta contra isocoste',material:'Unidad XIII - Minimizacion de costes y RTS = w/r',objective:'Elegir L y K para cumplir Q al menor coste posible.',decision:'Mezcla de minimo coste',options:[['labor_mix','Mas L'],['capital_mix','Mas K'],['balanced_mix','Balanceada']],w:10,r:10,q:150,p:4,F:0,debrief:'El error fue producir poco, gastar demasiado o no igualar RTS con w/r?'},
-      {title:'Shock de precios relativos',material:'Unidad XIII - Demandas condicionadas y sustitucion',objective:'Predecir como cambia K/L cuando el trabajo se encarece.',decision:'Prediccion K/L',options:[['raise_k_ratio','K/L sube'],['lower_k_ratio','K/L baja'],['same_ratio','K/L casi igual']],w:18,r:7,q:150,p:4,F:0,debrief:'Que empresas sustituyen trabajo por capital con menos perdida tecnica?'},
-      {title:'Corto plazo, coste medio y escala',material:'Unidad XIV - Costes fijos, CMe, CMg y escala',objective:'Decidir si la orden grande conviene con F alto y mirar CMe.',decision:'Decision de escala',options:[['produce_scale','Aceptar escala'],['reject_scale','Rechazar por CMe'],['wait_scale','Recalcular CMe']],w:10,r:10,q:230,p:4,F:450,debrief:'El coste total sube, pero que pasa con CMe al repartir F?'},
-      {title:'Reveal y formalizacion',material:'Cierre XI-XIV',objective:'Revelar funciones oficiales y conectar cada ronda con la teoria.',decision:'Sin decision competitiva',options:[],w:10,r:10,q:150,p:4,F:0,debrief:'Cual fue el error conceptual mas comun?',reveal:true}
-    ];
-    let roundIndex=0, seconds=ROUND_SECONDS, timer=null, running=false, inputs={};
-    function $(id){return document.getElementById(id)}
-    function init(){marketDefs.forEach(d=>{const id=d[0];$('controls').insertAdjacentHTML('beforeend',`<label>${d[5]} <input id="${id}" type="range" min="${d[1]}" max="${d[2]}" value="${d[3]}" step="${d[4]}" oninput="render()"> <output id="${id}Out"></output></label>`);inputs[id]=$(id)});goRound(0,false)}
-    function market(){return{w:+inputs.w.value,r:+inputs.r.value,q:+inputs.q.value,p:+inputs.p.value,F:+inputs.F.value}}
-    function money(x){const y=Math.round(x);return(y<0?'-$':'$')+Math.abs(y).toLocaleString('es-ES')}
-    function production(f,L,K){return f.A*Math.pow(Math.max(.01,+L),f.a)*Math.pow(Math.max(.01,+K),f.b)}
-    function optimalInputs(f,m){const vc=(m.q/f.A)*Math.pow(m.w/f.a,f.a)*Math.pow(m.r/f.b,f.b);return{L:f.a*vc/m.w,K:f.b*vc/m.r,C:vc+m.F,vc}}
-    function evaluate(f){const m=market(),q=production(f,f.L,f.K),vc=m.w*f.L+m.r*f.K,C=vc+m.F,opt=optimalInputs(f,m),eq=vc*m.q/Math.max(q,.01)+m.F,score=Math.max(0,Math.min(100,100*opt.C/eq*Math.min(1,q/m.q)));return{q,vc,C,CMe:C/Math.max(q,.01),opt,eq,score,pi:m.p*q-C,eqPi:m.p*m.q-eq,optPi:m.p*m.q-opt.C}}
-    function expectedDecision(f,e){const r=rounds[roundIndex];if(r.decision==='Perfil tecnologico')return f.a>f.b?'labor':f.b>f.a?'capital':'balanced';if(r.decision==='Orden comercial')return e.eqPi>=0?'accept':'reject';if(r.decision==='Mezcla de minimo coste'){const ratio=e.opt.K/e.opt.L;return ratio>1.15?'capital_mix':ratio<.85?'labor_mix':'balanced_mix'}if(r.decision==='Prediccion K/L')return 'raise_k_ratio';if(r.decision==='Decision de escala')return e.optPi>=0?'produce_scale':'reject_scale';return ''}
-    function render(){const m=market(),r=rounds[roundIndex];marketDefs.forEach(d=>$(d[0]+'Out').textContent=' '+inputs[d[0]].value);$('roundName').textContent='Ronda '+(roundIndex+1)+': '+r.title;$('roundMaterial').textContent=r.material;$('roundObjective').textContent=r.objective;$('roundDecision').textContent=r.decision;$('roundDebrief').textContent=r.debrief;renderClock();$('teamRows').innerHTML=firms.map(f=>{const e=evaluate(f);if(!f.D[roundIndex]&&r.options[0])f.D[roundIndex]=r.options[0][0];const options=r.options.map(o=>`<option value="${o[0]}" ${f.D[roundIndex]===o[0]?'selected':''}>${o[1]}</option>`).join('');const ok=r.reveal||f.D[roundIndex]===expectedDecision(f,e);return `<tr><td>G${f.g}</td><td><b>${f.n}</b><br><span class="note">${f.desc}</span></td><td>${r.reveal?'Reveal':`<select class="decision" onchange="firms[${f.g-1}].D[roundIndex]=this.value;render()">${options}</select>`}</td><td><input type="number" min="1" value="${Math.round(f.L)}" onchange="firms[${f.g-1}].L=Math.max(1,+this.value);render()"></td><td><input type="number" min="1" value="${Math.round(f.K)}" onchange="firms[${f.g-1}].K=Math.max(1,+this.value);render()"></td><td>${e.q.toFixed(1)}</td><td>${money(e.C)}</td><td>${money(e.CMe)}</td><td class="${e.pi>=0?'ok':'bad'}">${money(e.pi)}</td><td class="${e.score>=85?'ok':e.score>=65?'mid':'bad'}">${e.score.toFixed(1)}</td><td class="${ok?'ok':'bad'}">${ok?'Coherente':'Revisar'}</td><td class="admin">Q=${f.A}L^${f.a.toFixed(2)}K^${f.b.toFixed(2)}<br>L*=${e.opt.L.toFixed(1)} K*=${e.opt.K.toFixed(1)} C*=${money(e.opt.C)} pi*=${money(e.optPi)}</td></tr>`}).join('');const ranked=firms.map(f=>({f,e:evaluate(f)})).sort((a,b)=>b.e.score-a.e.score);$('ranking').innerHTML=ranked.map((x,i)=>`<p>${i+1}. <b>${x.f.n}</b> | score ${x.e.score.toFixed(1)} | pi ${money(x.e.pi)} | Q ${x.e.q.toFixed(1)}</p>`).join('')}
-    function goRound(i,withLog=true){roundIndex=Math.max(0,Math.min(rounds.length-1,i));const r=rounds[roundIndex];inputs.w.value=r.w;inputs.r.value=r.r;inputs.q.value=r.q;inputs.p.value=r.p;inputs.F.value=r.F;resetTimer(false);if(r.reveal)setView('admin');if(withLog)addLog('Ronda '+(roundIndex+1),r.title+' aplicada: w='+r.w+', r='+r.r+', Q='+r.q+', p='+r.p+', F='+r.F);render()}
-    function renderClock(){$('clock').textContent=String(Math.floor(seconds/60)).padStart(2,'0')+':'+String(seconds%60).padStart(2,'0')}
-    function startTimer(){if(running)return;running=true;timer=setInterval(()=>{seconds--;if(seconds<=0){seconds=0;pauseTimer();addLog('Timer','Tiempo agotado. Cierra la decision de la ronda.')}renderClock()},1000)}
-    function pauseTimer(){clearInterval(timer);running=false;renderClock()}
-    function resetTimer(withLog=true){pauseTimer();seconds=ROUND_SECONDS;renderClock();if(withLog)addLog('Timer','Reiniciado a 04:00')}
-    function setView(view){document.body.className=view==='admin'?'admin':view==='test'?'test':'';if(view==='test')runDiagnostics(false);render()}
-    function shock(type){if(type==='labor')inputs.w.value=17;if(type==='capital')inputs.r.value=17;if(type==='order')inputs.q.value=220;if(type==='reset'){inputs.w.value=10;inputs.r.value=10;inputs.q.value=150;inputs.p.value=4;inputs.F.value=0}addLog('Shock aplicado',type);render()}
-    function fillNearOptimal(){firms.forEach((f,i)=>{const o=optimalInputs(f,market()),n=1+((i%3)-1)*.08;f.L=Math.max(1,Math.round(o.L*n));f.K=Math.max(1,Math.round(o.K/n))});addLog('Carga de prueba','Equipos cerca del optimo.');render()}
-    function randomizeTeams(){firms.forEach(f=>{f.L=Math.floor(5+Math.random()*34);f.K=Math.floor(5+Math.random()*34)});addLog('Randomizar','Nuevos L y K asignados.');render()}
-    function resetTeams(){[[18,10],[12,18],[13,17],[10,20],[17,14],[8,22]].forEach((v,i)=>{firms[i].L=v[0];firms[i].K=v[1]});addLog('Reset equipos','Inputs iniciales restaurados.');render()}
-    function runDiagnostics(writeLog=true){const checks=[];checks.push(['Hay seis rondas',rounds.length===6]);checks.push(['Timer configurado en 240 segundos',ROUND_SECONDS===240]);checks.push(['Hay seis empresas',firms.length===6]);firms.forEach(f=>checks.push([f.n+': alpha + beta = 1',Math.abs(f.a+f.b-1)<1e-9]));$('diagnostics').innerHTML=checks.map(c=>`<p class="${c[1]?'ok':'bad'}">${c[1]?'PASS':'FAIL'} - ${c[0]}</p>`).join('');if(writeLog)addLog('Diagnostics',checks.every(c=>c[1])?'Todos los tests pasaron.':'Hay tests fallando.')}
-    function addLog(title,detail){$('logBox').insertAdjacentHTML('afterbegin',`<div class="log-item"><b>${title}</b><br>${detail}</div>`)}
-    init();
-  </script>
+  <p>Abriendo el simulador actual... <a href="micro-firm-simulator.html">Entrar manualmente</a>.</p>
 </body>
 </html>
