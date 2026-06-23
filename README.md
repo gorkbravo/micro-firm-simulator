@@ -4,9 +4,9 @@ Interactive teaching activity for Microeconomics I, built around Varian-style fi
 
 ## Contents
 
-- `index.html`: primary standalone simulator. Open it in a browser to run the classroom activity.
-- `micro-firm-simulator.html`: same simulator with the original working filename.
-- `docs/guion-operativo.md`: classroom flow, timing, round mechanics, debrief prompts, and pre-class checklist.
+- `micro-firm-simulator.html`: current working simulator for the classroom activity.
+- `index.html`: older standalone version kept for reference.
+- `docs/guion-operativo.md`: classroom flow, timing, round mechanics, scoring rules, debrief prompts, and pre-class checklist.
 - `materials/`: source lecture presentations used to align the rounds.
 - `AGENTS.md`: orientation and editing guide for future coding agents.
 
@@ -23,11 +23,21 @@ The simulator rounds follow the chronological order of the course. Each round is
 
 ## Simulator Mechanics
 
-The main score still measures performance against the theoretical minimum cost:
+The simulator now reports two scores:
 
-`Score = 100 x C* / coste equivalente del equipo`
+- `Score ronda`: the score for the active round. Its formula changes by round so it matches the learning objective of that round.
+- `Overall`: the rolling mean of all competitive round scores up to the active round. The ranking is ordered by this overall score.
 
-The simulator also shows a round-specific decision control and a feedback chip. The feedback does not replace the cost score; it tells students whether their qualitative decision is coherent with the model in that round.
+Coherence now affects scoring directly. The conceptual dropdown is no longer only feedback: if the qualitative decision is not coherent with the hidden optimum, the team loses the conceptual component of that round's score.
+
+Round score logic:
+
+1. Technology map: technology-profile coherence plus closeness of the chosen `K/L` to the hidden technology ratio.
+2. Profit order: accept/reject coherence plus cost efficiency and profit quality.
+3. Cost minimization: mostly cost efficiency, with a smaller conceptual component for choosing the right input-mix direction.
+4. Relative-price shock: prediction coherence plus closeness of the chosen `K/L` to the new optimal ratio.
+5. Scale and average cost: scale-decision coherence plus cost efficiency and profit quality.
+6. Reveal: non-competitive; excluded from the rolling mean.
 
 Live mode hides official production functions. Test mode runs diagnostics. Admin mode reveals functions, optima, and formalization data.
 
