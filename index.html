@@ -362,12 +362,12 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.88rem;
+      font-size: 0.92rem;
     }
 
     th,
     td {
-      padding: 9px 10px;
+      padding: 11px 12px;
       border-bottom: 1px solid var(--line);
       text-align: left;
       vertical-align: middle;
@@ -444,15 +444,10 @@
       color: var(--rose);
     }
 
-    .split {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 390px;
-      gap: 18px;
-    }
-
     .rank-list {
       display: grid;
-      gap: 10px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
       padding: 16px;
     }
 
@@ -462,7 +457,7 @@
       gap: 10px;
       align-items: center;
       min-height: 52px;
-      padding: 8px;
+      padding: 10px 12px;
       border: 1px solid var(--line);
       background: #fff;
       border-radius: 8px;
@@ -602,8 +597,7 @@
     }
 
     @media (max-width: 1180px) {
-      .layout,
-      .split {
+      .layout {
         grid-template-columns: 1fr;
       }
 
@@ -611,10 +605,8 @@
         position: static;
       }
 
-      .kpis {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
+      .kpis,
+      .rank-list,
       .cards {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
@@ -628,6 +620,7 @@
 
       header,
       .kpis,
+      .rank-list,
       .cards,
       .shock-grid {
         grid-template-columns: 1fr;
@@ -671,7 +664,6 @@
         <section class="panel">
           <div class="section">
             <h2>Ronda activa</h2>
-            <p class="note">Cada ronda fija el objetivo pedagogico y un escenario inicial. Puedes ajustar los sliders despues.</p>
             <div class="round-panel">
               <span class="round-badge" id="roundBadge">Ronda 1</span>
               <div class="round-title" id="roundTitle">Deducir tecnologia</div>
@@ -689,7 +681,6 @@
           </div>
           <div class="section">
             <h2>Escenario</h2>
-            <p class="note">Ajusta precios, orden y costes de arranque. El ranking compara cada decision con el coste minimo teorico de su empresa.</p>
             <div class="controls">
               <div class="control">
                 <label>Salario w <output id="wageOut"></output></label>
@@ -730,11 +721,11 @@
           </div>
           <div class="section admin">
             <h2>Admin visible</h2>
-            <p class="note">Este modo revela funciones oficiales, L*, K* y C*. Usalo antes de clase para revisar que el escenario tiene sentido.</p>
+            <p class="note">Revela funciones oficiales, L*, K* y C*.</p>
           </div>
           <div class="section test">
             <h2>Test mode</h2>
-            <p class="note">Ejecuta diagnosticos antes de proyectar: funciones, optimos, scoring y rangos de inputs.</p>
+            <p class="note">Verifica funciones, optimos y scoring.</p>
             <div class="toolbar-actions" style="margin-top:12px">
               <button class="text-button" id="runTests">Run diagnostics</button>
             </div>
@@ -766,60 +757,55 @@
           </article>
         </div>
 
-        <div class="split">
-          <section class="panel">
-            <div class="toolbar">
-              <div>
-                <h2>Decisiones de equipos</h2>
-                <p class="note live-only">Las funciones oficiales quedan ocultas. Cada equipo usa su booklet para decidir L y K.</p>
-                <p class="note admin">Admin muestra la funcion oficial y el optimo actual para revisar la clase.</p>
-                <p class="note test">Test mode mantiene la tabla activa y permite probar cambios de escenario.</p>
-              </div>
-              <div class="toolbar-actions">
-                <button class="text-button" id="fillNearOptimal">Cargar cerca del optimo</button>
-                <button class="text-button" id="randomize">Randomizar</button>
-                <button class="text-button" id="resetTeams">Reset equipos</button>
-              </div>
+        <section class="panel">
+          <div class="toolbar">
+            <div>
+              <h2>Decisiones de equipos</h2>
+              <p class="note live-only">Las funciones oficiales quedan ocultas. Cada equipo decide L y K.</p>
+              <p class="note admin">Admin muestra la funcion oficial y el optimo actual.</p>
             </div>
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Grupo</th>
-                    <th>Empresa</th>
-                    <th>L</th>
-                    <th>K</th>
-                    <th>Q equipo</th>
-                    <th>Coste</th>
-                    <th>CMe</th>
-                    <th>Beneficio</th>
-                    <th>C*</th>
-                    <th>Score</th>
-                    <th class="admin">Funcion oficial</th>
-                    <th class="admin">Optimo</th>
-                  </tr>
-                </thead>
-                <tbody id="teamRows"></tbody>
-              </table>
+            <div class="toolbar-actions">
+              <button class="text-button" id="fillNearOptimal">Cargar cerca del optimo</button>
+              <button class="text-button" id="randomize">Randomizar</button>
+              <button class="text-button" id="resetTeams">Reset equipos</button>
             </div>
-          </section>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Grupo</th>
+                  <th>Empresa</th>
+                  <th>L</th>
+                  <th>K</th>
+                  <th>Q equipo</th>
+                  <th>Coste</th>
+                  <th>CMe</th>
+                  <th>Beneficio</th>
+                  <th>C*</th>
+                  <th>Score</th>
+                  <th class="admin">Funcion oficial</th>
+                  <th class="admin">Optimo</th>
+                </tr>
+              </thead>
+              <tbody id="teamRows"></tbody>
+            </table>
+          </div>
+        </section>
 
-          <section class="panel">
-            <div class="toolbar">
-              <div>
-                <h2>Ranking</h2>
-                <p class="note">Ordenado por score relativo contra el optimo.</p>
-              </div>
+        <section class="panel">
+          <div class="toolbar">
+            <div>
+              <h2>Ranking</h2>
             </div>
-            <div class="rank-list" id="ranking"></div>
-          </section>
-        </div>
+          </div>
+          <div class="rank-list" id="ranking"></div>
+        </section>
 
         <section class="panel">
           <div class="toolbar">
             <div>
               <h2>Booklets de empresa</h2>
-              <p class="note">Version proyectable. El booklet impreso debe tener mas pistas y una tabla historica; no debe mostrar la funcion oficial.</p>
             </div>
           </div>
           <div class="cards" id="firmCards"></div>
@@ -857,7 +843,6 @@
           <div class="toolbar">
             <div>
               <h2>Diagnostics</h2>
-              <p class="note">Antes de clase: run diagnostics, cambia shocks, run diagnostics otra vez.</p>
             </div>
           </div>
           <div class="diagnostics" id="diagnostics"></div>
@@ -867,7 +852,6 @@
           <div class="toolbar">
             <div>
               <h2>Registro</h2>
-              <p class="note">Deja trazabilidad de pruebas y shocks aplicados.</p>
             </div>
           </div>
           <div class="log" id="log"></div>
