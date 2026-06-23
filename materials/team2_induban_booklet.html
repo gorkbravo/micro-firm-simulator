@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Micro Firm Simulator | Equipo 2: Induban</title>
+  <style>
+    :root{
+      --ink:#17202a;
+      --muted:#667085;
+      --line:#d8dee8;
+      --soft:#f6f8fb;
+      --panel:#ffffff;
+      --blue:#2563eb;
+      --green:#15803d;
+      --amber:#b45309;
+      --coffee:#6f4e37;
+      --cream:#fff8ef;
+      --shadow:0 16px 38px rgba(23,32,42,.12);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      color:var(--ink);
+      background:linear-gradient(180deg,#eef3f8 0%,#fbfcfe 45%,#edf1f5 100%);
+      line-height:1.48;
+    }
+    .booklet{
+      width:min(980px,calc(100% - 32px));
+      margin:0 auto;
+      padding:28px 0 44px;
+    }
+    .cover,.page{
+      background:rgba(255,255,255,.96);
+      border:1px solid var(--line);
+      border-radius:8px;
+      box-shadow:var(--shadow);
+      padding:28px;
+      margin:0 0 18px;
+      overflow:hidden;
+    }
+    .cover{
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:24px;
+      align-items:center;
+      min-height:560px;
+      background:
+        radial-gradient(circle at 10% 10%,rgba(111,78,55,.14),transparent 32%),
+        linear-gradient(135deg,#fff,#fff8ef 58%,#f3efe7);
+    }
+    .eyebrow{
+      margin:0 0 8px;
+      color:var(--blue);
+      font-size:.78rem;
+      font-weight:850;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+    h1,h2,h3{margin:0;line-height:1.12}
+    h1{font-size:3rem;letter-spacing:-.02em}
+    h2{font-size:1.58rem;margin-bottom:14px}
+    h3{font-size:1.05rem;margin:16px 0 8px;color:#344054}
+    p{margin:0 0 11px}
+    .subtitle{font-size:1.08rem;color:var(--muted);margin-top:14px}
+    .badge-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:6px 10px;
+      background:#fff;
+      color:#344054;
+      font-weight:750;
+      font-size:.86rem;
+    }
+    .hero-img,.wide-img{
+      width:100%;
+      display:block;
+      border-radius:8px;
+      border:1px solid var(--line);
+      background:#fff;
+      object-fit:cover;
+    }
+    .hero-img{max-height:380px}
+    .wide-img{max-height:300px}
+    figure{margin:0}
+    figcaption{
+      color:var(--muted);
+      font-size:.82rem;
+      margin-top:7px;
+    }
+    .note,.rule{
+      border:1px solid var(--line);
+      border-radius:8px;
+      background:var(--soft);
+      padding:12px 14px;
+      color:#344054;
+    }
+    .rule{
+      border-color:#e6d6c3;
+      background:var(--cream);
+      margin-top:18px;
+    }
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .card{
+      border:1px solid var(--line);
+      border-radius:8px;
+      background:#fff;
+      padding:14px;
+    }
+    .metric{font-size:.8rem;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.05em}
+    .metric strong{display:block;color:var(--ink);font-size:1.05rem;text-transform:none;letter-spacing:0;margin-top:4px}
+    ul{margin:0 0 12px 20px;padding:0}
+    li{margin:5px 0}
+    .flow{
+      border:1px solid var(--line);
+      border-radius:8px;
+      background:#fff;
+      padding:12px;
+      margin:12px 0;
+    }
+    svg text{font-family:Inter,Arial,sans-serif}
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin:10px 0 16px;
+      font-size:.94rem;
+    }
+    th,td{
+      border:1px solid var(--line);
+      padding:9px;
+      vertical-align:top;
+      text-align:left;
+    }
+    th{
+      background:#eef3f8;
+      color:#475467;
+      font-size:.78rem;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+    }
+    .blank{height:34px}
+    .longblank{height:62px}
+    .checklist td:first-child{width:32px;text-align:center;color:var(--muted)}
+    .round{
+      page-break-inside:avoid;
+      border:1px solid var(--line);
+      border-radius:8px;
+      padding:14px;
+      margin:14px 0;
+      background:#fff;
+    }
+    .round h3{margin-top:0;color:var(--blue)}
+    .scenario{
+      display:inline-block;
+      background:#eef3f8;
+      border:1px solid var(--line);
+      border-radius:8px;
+      padding:6px 9px;
+      color:#344054;
+      font-weight:780;
+      font-size:.88rem;
+      margin:4px 0 10px;
+    }
+    .small{font-size:.86rem;color:var(--muted)}
+    .source-list li{margin-bottom:7px}
+    .page-break{break-before:page}
+    @media(max-width:760px){
+      .cover,.grid-2,.grid-3{grid-template-columns:1fr}
+      .cover,.page{padding:20px}
+      h1{font-size:2.35rem}
+    }
+    @media print{
+      body{background:#fff}
+      .booklet{width:100%;padding:0}
+      .cover,.page{box-shadow:none;border-radius:0;margin:0;min-height:auto;break-after:page}
+      .page:last-child{break-after:auto}
+      a{color:inherit;text-decoration:none}
+    }
+  </style>
+</head>
+<body>
+  <main class="booklet">
+    <section class="cover">
+      <div>
+        <p class="eyebrow">Micro Firm Simulator</p>
+        <h1>Equipo 2<br>Induban</h1>
+        <p class="subtitle">Booklet de empresa para inferir tecnología, costes y decisiones de producción.</p>
+        <div class="badge-row">
+          <span class="badge">Microeconomía I</span>
+          <span class="badge">Tecnología</span>
+          <span class="badge">Costes</span>
+          <span class="badge">Decisiones en 4 minutos</span>
+        </div>
+        <div class="rule">
+          <strong>Regla del juego.</strong> La empresa es real; la función de producción del simulador no es una estimación empírica de Induban. Es una función didáctica inspirada en rasgos productivos de la industria cafetalera para practicar tecnología, beneficio, minimización de costes y curvas de costes.
+        </div>
+      </div>
+      <figure>
+        <img class="hero-img" src="https://www.induban.com/media/zoo/images/factoria-bani_71156777237a2205ef958d647af6d0b2.jpg" alt="Factoría de Induban en Baní">
+        <figcaption>Imagen real de una factoría de Induban. Fuente: página oficial de Induban, sección Factorías.</figcaption>
+      </figure>
+    </section>
+
+    <section class="page">
+      <p class="eyebrow">1. Contexto real</p>
+      <h2>La empresa real que van a representar</h2>
+      <div class="grid-2">
+        <div>
+          <p><strong>Industrias Banilejas, S.A.S. (Induban)</strong> es una empresa dominicana asociada al café y a la marca Café Santo Domingo. La compañía se presenta como la principal empresa productora de café de la República Dominicana y ubica sus oficinas en la avenida Máximo Gómez, en Santo Domingo.</p>
+          <p>Induban fue fundada el <strong>12 de abril de 1945</strong> por don Manuel de Jesús Perelló Báez, con el objetivo de dedicarse a la compra, elaboración y venta de café. Desde entonces, la empresa ha construido una cadena de valor que conecta abastecimiento, torrefacción, control de calidad, empaque, distribución y marcas de consumo.</p>
+          <p>En años recientes, la empresa ha ampliado su presencia con unidades como Aroma Coffee Service, Agrocafé del Caribe, Santo Domingo Coffee Shop y el Instituto del Café Santo Domingo. También ha invertido en viveros y fincas de café en Rancho Arriba y Hato Mayor, incluyendo plantaciones de especies resistentes a la roya.</p>
+        </div>
+        <div>
+          <figure>
+            <img class="wide-img" src="https://www.induban.com/media/zoo/images/cafe-santodomingo-molido_4574d9864b51e244a81f51dd4fb7c63f.png" alt="Producto Café Santo Domingo molido de Induban">
+            <figcaption>Producto Café Santo Domingo molido. Fuente: página oficial de productos de Induban.</figcaption>
+          </figure>
+          <div class="note" style="margin-top:12px">
+            <strong>Datos para anclar el caso</strong>
+            <ul>
+              <li>Empresa dominicana fundada en 1945.</li>
+              <li>Marca principal: Café Santo Domingo.</li>
+              <li>Actividades clave: compra, elaboración, tostado, molienda, empaque, distribución y control de calidad.</li>
+              <li>Presencia internacional de sus marcas en mercados como Estados Unidos, Canadá, España y otros países.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page">
+      <p class="eyebrow">2. Pistas productivas</p>
+      <h2>Cómo produce valor Induban</h2>
+      <p>En el caso de Induban, el producto final no aparece únicamente por “tener café”. La materia prima debe pasar por una cadena técnica: recepción y almacenamiento del grano, selección, torrefacción, molienda, empaque, control de calidad y distribución. En sus factorías se realiza el proceso inicial para la elaboración y almacenamiento del café; luego el café seleccionado se transporta a Santo Domingo, donde se ubican la torrefacción principal y el centro de control de calidad.</p>
+      <p>La propia empresa describe que expertos catadores seleccionan el grano que será utilizado en el producto final y que, con tecnología de vanguardia, se procede al tostado, molido y empaque de los productos. Además, sus instalaciones principales cuentan con sistemas de purificación ambiental. Es decir, la producción combina conocimiento humano, criterios de calidad, maquinaria industrial, infraestructura logística y capital físico especializado.</p>
+
+      <div class="flow" aria-label="Diagrama del proceso productivo">
+        <svg viewBox="0 0 900 190" width="100%" height="190" role="img">
+          <defs>
+            <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+              <path d="M0,0 L0,6 L9,3 z" fill="#667085"></path>
+            </marker>
+          </defs>
+          <rect x="20" y="32" width="125" height="82" rx="12" fill="#fff8ef" stroke="#d8dee8"></rect>
+          <text x="82" y="65" text-anchor="middle" font-size="15" font-weight="700" fill="#17202a">Café verde</text>
+          <text x="82" y="90" text-anchor="middle" font-size="12" fill="#667085">finca / compra</text>
+
+          <line x1="152" y1="73" x2="205" y2="73" stroke="#667085" stroke-width="2" marker-end="url(#arrow)"></line>
+          <rect x="212" y="32" width="125" height="82" rx="12" fill="#ffffff" stroke="#d8dee8"></rect>
+          <text x="274" y="62" text-anchor="middle" font-size="15" font-weight="700" fill="#17202a">Almacenaje</text>
+          <text x="274" y="88" text-anchor="middle" font-size="12" fill="#667085">factorías</text>
+
+          <line x1="344" y1="73" x2="397" y2="73" stroke="#667085" stroke-width="2" marker-end="url(#arrow)"></line>
+          <rect x="404" y="32" width="125" height="82" rx="12" fill="#eef3f8" stroke="#d8dee8"></rect>
+          <text x="466" y="62" text-anchor="middle" font-size="15" font-weight="700" fill="#17202a">Torrefacción</text>
+          <text x="466" y="88" text-anchor="middle" font-size="12" fill="#667085">tostado</text>
+
+          <line x1="536" y1="73" x2="589" y2="73" stroke="#667085" stroke-width="2" marker-end="url(#arrow)"></line>
+          <rect x="596" y="32" width="125" height="82" rx="12" fill="#ffffff" stroke="#d8dee8"></rect>
+          <text x="658" y="62" text-anchor="middle" font-size="15" font-weight="700" fill="#17202a">Cata y calidad</text>
+          <text x="658" y="88" text-anchor="middle" font-size="12" fill="#667085">selección</text>
+
+          <line x1="728" y1="73" x2="781" y2="73" stroke="#667085" stroke-width="2" marker-end="url(#arrow)"></line>
+          <rect x="788" y="32" width="92" height="82" rx="12" fill="#fff8ef" stroke="#d8dee8"></rect>
+          <text x="834" y="62" text-anchor="middle" font-size="15" font-weight="700" fill="#17202a">Empaque</text>
+          <text x="834" y="88" text-anchor="middle" font-size="12" fill="#667085">venta</text>
+
+          <rect x="174" y="142" width="552" height="28" rx="14" fill="#f6f8fb" stroke="#d8dee8"></rect>
+          <text x="450" y="161" text-anchor="middle" font-size="13" fill="#475467">La decisión del equipo consiste en traducir esta cadena real a L, K y Q dentro del simulador.</text>
+        </svg>
+      </div>
+
+      <div class="grid-3">
+        <div class="card"><span class="metric">Trabajo productivo</span><strong>Operarios, catadores, supervisión, logística, mantenimiento.</strong></div>
+        <div class="card"><span class="metric">Capital productivo</span><strong>Torrefactores, molinos, líneas de empaque, almacenes, vehículos.</strong></div>
+        <div class="card"><span class="metric">Producto Q</span><strong>Café procesado y empacado con calidad vendible.</strong></div>
+      </div>
+
+      <div class="note" style="margin-top:14px">
+        <strong>Pregunta guía.</strong> Si una empresa transforma café mediante torrefacción, molienda, empaque, control de calidad e infraestructura logística, ¿qué factor parece más difícil de reemplazar rápidamente cuando aumenta la escala: horas de trabajo o capacidad instalada?
+      </div>
+    </section>
+
+    <section class="page">
+      <p class="eyebrow">3. Simulador</p>
+      <h2>Traducción al lenguaje del simulador</h2>
+      <p>En el simulador, la empresa se resume con una función de producción de tipo Cobb-Douglas:</p>
+      <div class="note" style="text-align:center;font-size:1.15rem">
+        <strong>Q = A * L<sup>alpha</sup> * K<sup>beta</sup></strong>
+      </div>
+      <p><strong>L</strong> representa trabajo productivo: personas que operan, supervisan, seleccionan, mantienen, transportan o atienden decisiones de producción. <strong>K</strong> representa capital productivo: maquinaria, planta, equipos, almacenes, tecnología, vehículos e infraestructura que ayudan a producir. <strong>Q</strong> representa la cantidad de producto final vendible.</p>
+      <p>La función oficial del simulador está oculta hasta el final. Antes de jugar, propongan una hipótesis razonada. No intenten adivinar números perfectos; intenten que los números cuenten una historia coherente sobre la tecnología de su empresa.</p>
+
+      <table>
+        <thead>
+          <tr><th>Parámetro</th><th>Qué significa</th><th>Propuesta del equipo</th><th>Justificación breve</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>A</strong></td><td>Productividad total de la tecnología.</td><td class="blank"></td><td class="blank"></td></tr>
+          <tr><td><strong>alpha</strong></td><td>Peso relativo del trabajo en la producción.</td><td class="blank"></td><td class="blank"></td></tr>
+          <tr><td><strong>beta</strong></td><td>Peso relativo del capital en la producción.</td><td class="blank"></td><td class="blank"></td></tr>
+        </tbody>
+      </table>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Cómo pensar L</h3>
+          <p>Piensen en tareas humanas que agregan valor: operación, supervisión, cata, mantenimiento, coordinación de almacenes y control de calidad.</p>
+        </div>
+        <div class="card">
+          <h3>Cómo pensar K</h3>
+          <p>Piensen en activos duraderos: torrefactores, molinos, líneas de empaque, sistemas de control, almacenes, vehículos e instalaciones.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="page">
+      <p class="eyebrow">4. Respuestas</p>
+      <h2>Hojas de respuesta del Equipo 2</h2>
+      <p>En cada ronda tienen 4 minutos. Primero tomen la decisión conceptual que pide el simulador. Luego elijan L y K. Al final, comparen el resultado con el score, el beneficio y el feedback de coherencia.</p>
+
+      <div class="round">
+        <h3>Ronda 1 - Mapa tecnológico de la empresa</h3>
+        <span class="scenario">Q = 120 | w = 10 | r = 10 | p = 4 | F = 0</span>
+        <table class="checklist">
+          <tbody>
+            <tr><td>□</td><td>Trabajo intensivo</td><td>□</td><td>Capital intensivo</td><td>□</td><td>Balanceada</td></tr>
+          </tbody>
+        </table>
+        <table>
+          <tbody>
+            <tr><th>L elegido</th><td class="blank"></td><th>K elegido</th><td class="blank"></td></tr>
+            <tr><th>A propuesto</th><td class="blank"></td><th>Alpha / beta propuestos</th><td class="blank"></td></tr>
+            <tr><th>Una pista concreta del booklet</th><td colspan="3" class="longblank"></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="round">
+        <h3>Ronda 2 - Beneficio: aceptar o rechazar la orden</h3>
+        <span class="scenario">Q = 180 | w = 10 | r = 10 | p = 3.2 | F = 220</span>
+        <table class="checklist">
+          <tbody>
+            <tr><td>□</td><td>Aceptar la orden</td><td>□</td><td>Rechazar la orden</td><td></td><td></td></tr>
+          </tbody>
+        </table>
+        <table>
+          <tbody>
+            <tr><th>L elegido</th><td class="blank"></td><th>K elegido</th><td class="blank"></td></tr>
+            <tr><th>Coste estimado</th><td class="blank"></td><th>Beneficio estimado: pQ - C</th><td class="blank"></td></tr>
+            <tr><th>Razón económica</th><td colspan="3" class="longblank"></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="round">
+        <h3>Ronda 3 - Isocuanta contra isocoste</h3>
+        <span class="scenario">Q = 150 | w = 10 | r = 10 | p = 4 | F = 0</span>
+        <table class="checklist">
+          <tbody>
+            <tr><td>□</td><td>Moverse hacia más L</td><td>□</td><td>Moverse hacia más K</td><td>□</td><td>Mezcla balanceada</td></tr>
+          </tbody>
+        </table>
+        <table>
+          <tbody>
+            <tr><th>L elegido</th><td class="blank"></td><th>K elegido</th><td class="blank"></td></tr>
+            <tr><th>Coste variable</th><td class="blank"></td><th>Q esperado</th><td class="blank"></td></tr>
+            <tr><th>Cómo conectan isocuanta e isocoste</th><td colspan="3" class="longblank"></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="page">
+      <p class="eyebrow">4. Respuestas</p>
+      <h2>Hojas de respuesta del Equipo 2, continuación</h2>
+
+      <div class="round">
+        <h3>Ronda 4 - Shock de precios relativos</h3>
+        <span class="scenario">Q = 150 | w = 18 | r = 7 | p = 4 | F = 0</span>
+        <table class="checklist">
+          <tbody>
+            <tr><td>□</td><td>K/L sube</td><td>□</td><td>K/L baja</td><td>□</td><td>K/L casi igual</td></tr>
+          </tbody>
+        </table>
+        <table>
+          <tbody>
+            <tr><th>L elegido</th><td class="blank"></td><th>K elegido</th><td class="blank"></td></tr>
+            <tr><th>Nuevo K/L</th><td class="blank"></td><th>Coste estimado</th><td class="blank"></td></tr>
+            <tr><th>Intuición del cambio</th><td colspan="3" class="longblank"></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="round">
+        <h3>Ronda 5 - Corto plazo, coste medio y escala</h3>
+        <span class="scenario">Q = 230 | w = 10 | r = 10 | p = 4 | F = 450</span>
+        <table class="checklist">
+          <tbody>
+            <tr><td>□</td><td>Aceptar escala</td><td>□</td><td>Rechazar por CMe</td><td>□</td><td>Recalcular CMe</td></tr>
+          </tbody>
+        </table>
+        <table>
+          <tbody>
+            <tr><th>L elegido</th><td class="blank"></td><th>K elegido</th><td class="blank"></td></tr>
+            <tr><th>Coste total</th><td class="blank"></td><th>CMe estimado</th><td class="blank"></td></tr>
+            <tr><th>Decisión final y razón</th><td colspan="3" class="longblank"></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="round">
+        <h3>Ronda 6 - Reveal y formalización</h3>
+        <span class="scenario">Q = 150 | w = 10 | r = 10 | p = 4 | F = 0</span>
+        <table>
+          <tbody>
+            <tr><th>Función revelada por el profesor</th><td class="blank"></td></tr>
+            <tr><th>¿Qué se acercó a nuestra hipótesis inicial?</th><td class="longblank"></td></tr>
+            <tr><th>¿Qué error conceptual corregimos?</th><td class="longblank"></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="page">
+      <p class="eyebrow">Fuentes</p>
+      <h2>Fuentes consultadas</h2>
+      <ul class="source-list">
+        <li>Induban, página oficial “Nosotros”: historia de la empresa, fecha de fundación, fundador, misión, visión, marcas, distribución y expansión internacional. <a href="https://www.induban.com/es/nosotros">https://www.induban.com/es/nosotros</a></li>
+        <li>Induban, página oficial “Factorías”: descripción de factorías, torrefacción principal, control de calidad, tostado, molido, empaque y sistema de purificación ambiental. <a href="https://www.induban.com/es/unidades-negocio/factorias">https://www.induban.com/es/unidades-negocio/factorias</a></li>
+        <li>Induban, página oficial “Café Santo Domingo”: descripción de productos, familia de productos, cápsulas, café molido, café en grano y referencias de calidad. <a href="https://www.induban.com/es/productos-destacado">https://www.induban.com/es/productos-destacado</a></li>
+      </ul>
+      <div class="note">
+        <strong>Recordatorio para el equipo.</strong> No están buscando “la respuesta de Induban” en internet. Están usando información real para construir una hipótesis económica. La nota importante no es memorizar datos, sino traducir el caso real a una tecnología con L, K, Q, costes y beneficio.
+      </div>
+    </section>
+  </main>
+</body>
+</html>
