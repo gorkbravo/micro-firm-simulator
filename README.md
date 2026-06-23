@@ -8,6 +8,7 @@ Interactive teaching activity for Microeconomics I, built around Varian-style fi
 - `micro-firm-simulator.html`: same simulator with the original working filename.
 - `docs/guion-operativo.md`: classroom flow and checklist.
 - `materials/`: source lecture presentations used to align the rounds.
+- `AGENTS.md`: orientation and editing guide for future coding agents.
 
 ## Classroom Flow
 
@@ -26,4 +27,3 @@ The Dominican companies and production functions are didactic simulations, not e
 
 Current Drive prototype:
 https://drive.google.com/file/d/1asd3MWt_sJhaqCQudFPrXqP8O8xq1Ez6/view?usp=drivesdk
-
