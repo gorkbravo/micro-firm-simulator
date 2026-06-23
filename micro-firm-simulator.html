@@ -1,0 +1,1397 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Micro Firm Simulator - Empresas Dominicanas</title>
+  <style>
+    :root {
+      --ink: #17202a;
+      --muted: #667085;
+      --line: #d8dee8;
+      --panel: #ffffff;
+      --soft: #f6f8fb;
+      --blue: #2563eb;
+      --green: #15803d;
+      --amber: #b45309;
+      --rose: #be123c;
+      --violet: #6d28d9;
+      --teal: #0f766e;
+      --shadow: 0 16px 38px rgba(23, 32, 42, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #eef3f8 0%, #fbfcfe 48%, #edf1f5 100%);
+      min-height: 100vh;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    .app {
+      width: min(1540px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 22px 0 30px;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: end;
+      margin-bottom: 18px;
+    }
+
+    .eyebrow {
+      margin: 0 0 6px;
+      color: var(--blue);
+      font-size: 0.78rem;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 3vw, 3.15rem);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin: 10px 0 0;
+      max-width: 900px;
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 1rem;
+    }
+
+    .panel {
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .quick {
+      min-width: 300px;
+      padding: 14px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .quick strong {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .quick-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .view-tabs {
+      display: inline-grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      padding: 4px;
+      background: #e9eef6;
+      border-radius: 8px;
+    }
+
+    .view-tabs button,
+    .text-button,
+    .icon-button,
+    .shock {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      border-radius: 8px;
+      min-height: 36px;
+      cursor: pointer;
+      transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+    }
+
+    .view-tabs button {
+      min-width: 72px;
+      border-color: transparent;
+      background: transparent;
+      font-size: 0.84rem;
+      font-weight: 800;
+      padding: 0 10px;
+    }
+
+    .view-tabs button[aria-pressed="true"] {
+      background: #fff;
+      border-color: var(--line);
+      color: var(--blue);
+    }
+
+    .text-button {
+      padding: 0 12px;
+      font-weight: 780;
+    }
+
+    .icon-button {
+      width: 38px;
+      display: grid;
+      place-items: center;
+      font-size: 1rem;
+    }
+
+    .text-button:hover,
+    .icon-button:hover,
+    .shock:hover,
+    .view-tabs button:hover {
+      transform: translateY(-1px);
+      border-color: #9aa8bb;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 330px minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    aside {
+      display: grid;
+      gap: 14px;
+      position: sticky;
+      top: 14px;
+    }
+
+    .section {
+      padding: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section:last-child {
+      border-bottom: 0;
+    }
+
+    h2,
+    h3 {
+      margin: 0;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      font-size: 1rem;
+    }
+
+    h3 {
+      font-size: 0.88rem;
+    }
+
+    .note {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 0.84rem;
+      line-height: 1.42;
+    }
+
+    .controls {
+      display: grid;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .control label {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 780;
+      margin-bottom: 8px;
+    }
+
+    output {
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--blue);
+    }
+
+    .shock-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .shock {
+      padding: 0 10px;
+      font-size: 0.82rem;
+      font-weight: 760;
+      text-align: left;
+    }
+
+    .round-panel {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 12px;
+    }
+
+    .round-badge {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      gap: 6px;
+      min-height: 26px;
+      padding: 0 8px;
+      border-radius: 8px;
+      background: #eef4ff;
+      color: var(--blue);
+      font-size: 0.76rem;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+
+    .round-title {
+      font-size: 0.98rem;
+      font-weight: 850;
+      line-height: 1.25;
+    }
+
+    .round-meta {
+      display: grid;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 0.83rem;
+      line-height: 1.38;
+    }
+
+    .round-meta strong {
+      color: var(--ink);
+    }
+
+    .round-nav {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .formula-card {
+      display: grid;
+      gap: 10px;
+    }
+
+    .formula-card code {
+      display: block;
+      color: var(--ink);
+      background: #f2f4f7;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      white-space: normal;
+      line-height: 1.45;
+    }
+
+    .main {
+      display: grid;
+      gap: 18px;
+    }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .kpi {
+      padding: 14px;
+      min-height: 104px;
+    }
+
+    .kpi span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.76rem;
+      font-weight: 850;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .kpi strong {
+      font-size: 1.55rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .toolbar-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-width: 100%;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+
+    th,
+    td {
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      background: #f8fafc;
+      color: var(--muted);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      z-index: 1;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .company {
+      display: inline-grid;
+      grid-template-columns: 26px auto;
+      align-items: center;
+      gap: 8px;
+      font-weight: 830;
+    }
+
+    .dot {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 0.74rem;
+      font-weight: 900;
+    }
+
+    .mini {
+      color: var(--muted);
+      font-size: 0.78rem;
+      display: block;
+      margin-top: 2px;
+      max-width: 280px;
+      white-space: normal;
+      line-height: 1.25;
+    }
+
+    .num-input {
+      width: 76px;
+      min-height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0 8px;
+      background: #fff;
+      color: var(--ink);
+    }
+
+    .score {
+      font-weight: 900;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .score.good {
+      color: var(--green);
+    }
+
+    .score.mid {
+      color: var(--amber);
+    }
+
+    .score.bad {
+      color: var(--rose);
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 390px;
+      gap: 18px;
+    }
+
+    .rank-list {
+      display: grid;
+      gap: 10px;
+      padding: 16px;
+    }
+
+    .rank-row {
+      display: grid;
+      grid-template-columns: 34px 1fr auto;
+      gap: 10px;
+      align-items: center;
+      min-height: 52px;
+      padding: 8px;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 8px;
+    }
+
+    .rank-no {
+      height: 32px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: var(--ink);
+      font-weight: 900;
+    }
+
+    .bar {
+      height: 8px;
+      border-radius: 999px;
+      background: #e7ecf4;
+      margin-top: 7px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: inherit;
+      background: var(--blue);
+      transition: width 180ms ease;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      padding: 16px;
+    }
+
+    .firm-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+      background: #fff;
+      min-height: 150px;
+    }
+
+    .firm-card strong {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .firm-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.84rem;
+      line-height: 1.38;
+    }
+
+    .admin,
+    .test {
+      display: none;
+    }
+
+    body[data-view="admin"] .admin,
+    body[data-view="test"] .test {
+      display: revert;
+    }
+
+    body[data-view="admin"] .live-only,
+    body[data-view="test"] .live-only {
+      display: none;
+    }
+
+    body[data-view="admin"] .admin-inline,
+    body[data-view="test"] .test-inline {
+      display: inline;
+    }
+
+    .admin-inline,
+    .test-inline {
+      display: none;
+    }
+
+    .diagnostics {
+      padding: 16px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .diag {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 10px;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      background: #fff;
+    }
+
+    .status {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-weight: 900;
+      background: var(--green);
+    }
+
+    .status.fail {
+      background: var(--rose);
+    }
+
+    .log {
+      padding: 16px;
+      display: grid;
+      gap: 9px;
+      max-height: 270px;
+      overflow: auto;
+    }
+
+    .log-item {
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--muted);
+      font-size: 0.84rem;
+      line-height: 1.4;
+    }
+
+    .log-item strong {
+      color: var(--ink);
+    }
+
+    @media (max-width: 1180px) {
+      .layout,
+      .split {
+        grid-template-columns: 1fr;
+      }
+
+      aside {
+        position: static;
+      }
+
+      .kpis {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      .app {
+        width: min(100% - 18px, 1540px);
+        padding-top: 12px;
+      }
+
+      header,
+      .kpis,
+      .cards,
+      .shock-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quick {
+        min-width: 0;
+      }
+
+      .toolbar {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .toolbar-actions {
+        justify-content: flex-start;
+      }
+    }
+  </style>
+</head>
+<body data-view="live">
+  <div class="app">
+    <header>
+      <div>
+        <p class="eyebrow">Microeconomia I | Tecnologia, costes y decision optima</p>
+        <h1>Micro Firm Simulator</h1>
+        <p class="subtitle">Seis equipos reciben una empresa dominicana simulada, deducen su tecnologia y compiten contra la decision optima oculta. Las funciones son didacticas, no estimaciones reales de las empresas.</p>
+      </div>
+      <div class="quick panel">
+        <strong>Modo</strong>
+        <div class="quick-row view-tabs" aria-label="Seleccion de modo">
+          <button data-view="live" aria-pressed="true">Live</button>
+          <button data-view="test" aria-pressed="false">Test</button>
+          <button data-view="admin" aria-pressed="false">Admin</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside>
+        <section class="panel">
+          <div class="section">
+            <h2>Ronda activa</h2>
+            <p class="note">Cada ronda fija el objetivo pedagogico y un escenario inicial. Puedes ajustar los sliders despues.</p>
+            <div class="round-panel">
+              <span class="round-badge" id="roundBadge">Ronda 1</span>
+              <div class="round-title" id="roundTitle">Deducir tecnologia</div>
+              <div class="round-meta">
+                <div><strong>Material:</strong> <span id="roundConcept">Tecnologia</span></div>
+                <div><strong>Objetivo:</strong> <span id="roundObjective">Inferir si la empresa es intensiva en L o K.</span></div>
+                <div><strong>Debrief:</strong> <span id="roundPrompt">Que pista del booklet les hizo elegir alpha o beta alto?</span></div>
+              </div>
+              <div class="round-nav">
+                <button class="text-button" id="prevRound">Anterior</button>
+                <button class="text-button" id="nextRound">Siguiente</button>
+              </div>
+              <button class="text-button" id="applyRound">Aplicar escenario de ronda</button>
+            </div>
+          </div>
+          <div class="section">
+            <h2>Escenario</h2>
+            <p class="note">Ajusta precios, orden y costes de arranque. El ranking compara cada decision con el coste minimo teorico de su empresa.</p>
+            <div class="controls">
+              <div class="control">
+                <label>Salario w <output id="wageOut"></output></label>
+                <input id="wage" type="range" min="4" max="20" value="10" />
+              </div>
+              <div class="control">
+                <label>Renta del capital r <output id="rentOut"></output></label>
+                <input id="rent" type="range" min="4" max="20" value="10" />
+              </div>
+              <div class="control">
+                <label>Output objetivo Q <output id="targetOut"></output></label>
+                <input id="target" type="range" min="60" max="260" value="150" step="5" />
+              </div>
+              <div class="control">
+                <label>Precio output p <output id="priceOut"></output></label>
+                <input id="price" type="range" min="1" max="20" value="4" step="0.1" />
+              </div>
+              <div class="control">
+                <label>Coste fijo/cuasi fijo F <output id="fixedOut"></output></label>
+                <input id="fixedCost" type="range" min="0" max="600" value="0" step="10" />
+              </div>
+              <div class="control">
+                <label>Penalidad por no entregar <output id="penaltyOut"></output></label>
+                <input id="penalty" type="range" min="0.5" max="1" value="1" step="0.05" />
+              </div>
+            </div>
+            <div class="shock-grid">
+              <button class="shock" data-shock="labor">Trabajo caro</button>
+              <button class="shock" data-shock="capital">Capital caro</button>
+              <button class="shock" data-shock="orderUp">Orden grande</button>
+              <button class="shock" data-shock="reset">Reset mercado</button>
+            </div>
+          </div>
+          <div class="section formula-card">
+            <h2>Regla de scoring</h2>
+            <code>Score = 100 x C* / coste equivalente del equipo</code>
+            <p class="note">El coste equivalente ajusta la decision al Q objetivo e incorpora F. El beneficio usa pi = pQ - C.</p>
+          </div>
+          <div class="section admin">
+            <h2>Admin visible</h2>
+            <p class="note">Este modo revela funciones oficiales, L*, K* y C*. Usalo antes de clase para revisar que el escenario tiene sentido.</p>
+          </div>
+          <div class="section test">
+            <h2>Test mode</h2>
+            <p class="note">Ejecuta diagnosticos antes de proyectar: funciones, optimos, scoring y rangos de inputs.</p>
+            <div class="toolbar-actions" style="margin-top:12px">
+              <button class="text-button" id="runTests">Run diagnostics</button>
+            </div>
+          </div>
+        </section>
+      </aside>
+
+      <section class="main">
+        <div class="kpis">
+          <article class="kpi panel">
+            <span>Lider</span>
+            <strong id="leaderName">-</strong>
+            <p class="note" id="leaderWhy">Mayor score relativo.</p>
+          </article>
+          <article class="kpi panel">
+            <span>Mejor score</span>
+            <strong id="bestScore">0</strong>
+            <p class="note">100 equivale a la decision optima.</p>
+          </article>
+          <article class="kpi panel">
+            <span>Brecha media</span>
+            <strong id="avgGap">0%</strong>
+            <p class="note">Exceso de coste sobre el optimo.</p>
+          </article>
+          <article class="kpi panel">
+            <span>Ronda</span>
+            <strong id="roundKpi">1</strong>
+            <p class="note" id="roundKpiNote">Q objetivo: 150.</p>
+          </article>
+        </div>
+
+        <div class="split">
+          <section class="panel">
+            <div class="toolbar">
+              <div>
+                <h2>Decisiones de equipos</h2>
+                <p class="note live-only">Las funciones oficiales quedan ocultas. Cada equipo usa su booklet para decidir L y K.</p>
+                <p class="note admin">Admin muestra la funcion oficial y el optimo actual para revisar la clase.</p>
+                <p class="note test">Test mode mantiene la tabla activa y permite probar cambios de escenario.</p>
+              </div>
+              <div class="toolbar-actions">
+                <button class="text-button" id="fillNearOptimal">Cargar cerca del optimo</button>
+                <button class="text-button" id="randomize">Randomizar</button>
+                <button class="text-button" id="resetTeams">Reset equipos</button>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Grupo</th>
+                    <th>Empresa</th>
+                    <th>L</th>
+                    <th>K</th>
+                    <th>Q equipo</th>
+                    <th>Coste</th>
+                    <th>CMe</th>
+                    <th>Beneficio</th>
+                    <th>C*</th>
+                    <th>Score</th>
+                    <th class="admin">Funcion oficial</th>
+                    <th class="admin">Optimo</th>
+                  </tr>
+                </thead>
+                <tbody id="teamRows"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="toolbar">
+              <div>
+                <h2>Ranking</h2>
+                <p class="note">Ordenado por score relativo contra el optimo.</p>
+              </div>
+            </div>
+            <div class="rank-list" id="ranking"></div>
+          </section>
+        </div>
+
+        <section class="panel">
+          <div class="toolbar">
+            <div>
+              <h2>Booklets de empresa</h2>
+              <p class="note">Version proyectable. El booklet impreso debe tener mas pistas y una tabla historica; no debe mostrar la funcion oficial.</p>
+            </div>
+          </div>
+          <div class="cards" id="firmCards"></div>
+        </section>
+
+        <section class="panel admin">
+          <div class="toolbar">
+            <div>
+              <h2>Admin: funciones y optimos</h2>
+              <p class="note">Comprueba que la intuicion cualitativa coincide con alpha y beta.</p>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Empresa</th>
+                  <th>A</th>
+                  <th>alpha L</th>
+                  <th>beta K</th>
+                  <th>L*</th>
+                  <th>K*</th>
+                  <th>C*</th>
+                  <th>CMe*</th>
+                  <th>Pi*</th>
+                  <th>Ratio K/L</th>
+                </tr>
+              </thead>
+              <tbody id="adminRows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel test">
+          <div class="toolbar">
+            <div>
+              <h2>Diagnostics</h2>
+              <p class="note">Antes de clase: run diagnostics, cambia shocks, run diagnostics otra vez.</p>
+            </div>
+          </div>
+          <div class="diagnostics" id="diagnostics"></div>
+        </section>
+
+        <section class="panel">
+          <div class="toolbar">
+            <div>
+              <h2>Registro</h2>
+              <p class="note">Deja trazabilidad de pruebas y shocks aplicados.</p>
+            </div>
+          </div>
+          <div class="log" id="log"></div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const firms = [
+      {
+        group: 1,
+        short: "La Aurora",
+        company: "La Aurora, puros",
+        desc: "Produccion artesanal: trabajo manual especializado, torcedores expertos y control de calidad manual.",
+        A: 8,
+        alpha: 0.70,
+        beta: 0.30,
+        color: "#2563eb",
+        L: 18,
+        K: 10
+      },
+      {
+        group: 2,
+        short: "Induban",
+        company: "Cafe Santo Domingo / Induban",
+        desc: "Produccion industrial de cafe: tostado, molienda, empaque, distribucion y maquinaria relevante.",
+        A: 10,
+        alpha: 0.35,
+        beta: 0.65,
+        color: "#7c2d12",
+        L: 12,
+        K: 18
+      },
+      {
+        group: 3,
+        short: "Central Romana",
+        company: "Central Romana, azucar",
+        desc: "Agroindustria pesada: molinos, refineria, transporte, maquinaria, tierra y planta industrial.",
+        A: 9,
+        alpha: 0.40,
+        beta: 0.60,
+        color: "#15803d",
+        L: 13,
+        K: 17
+      },
+      {
+        group: 4,
+        short: "Pollo Cibao",
+        company: "Pollo Cibao",
+        desc: "Produccion avicola industrial: galpones, incubadoras, refrigeracion, procesamiento y bioseguridad.",
+        A: 11,
+        alpha: 0.30,
+        beta: 0.70,
+        color: "#b45309",
+        L: 10,
+        K: 20
+      },
+      {
+        group: 5,
+        short: "Puntacana",
+        company: "Grupo Puntacana / resort",
+        desc: "Capital hotelero importante, pero el servicio humano define la experiencia del cliente.",
+        A: 12,
+        alpha: 0.55,
+        beta: 0.45,
+        color: "#0f766e",
+        L: 17,
+        K: 14
+      },
+      {
+        group: 6,
+        short: "Ron",
+        company: "Ron Barcelo / Brugal",
+        desc: "Destileria, barricas, planta de embotellado, inventario envejecido, marca y distribucion.",
+        A: 10,
+        alpha: 0.25,
+        beta: 0.75,
+        color: "#6d28d9",
+        L: 8,
+        K: 22
+      }
+    ];
+
+    const rounds = [
+      {
+        no: 1,
+        title: "Mapa tecnologico de la empresa",
+        concept: "Unidad XI - Factores flujo, conjunto factible, isocuantas, Cobb-Douglas y RTS",
+        objective: "Leer el booklet, clasificar la tecnologia, inferir intensidad relativa de L/K y proponer A, alpha y beta.",
+        prompt: "Que pista concreta apunta a trabajo, capital, complementariedad o sustitucion? Como se veria la isocuanta?",
+        w: 10,
+        r: 10,
+        q: 120,
+        p: 4,
+        fixed: 0,
+        penalty: 1
+      },
+      {
+        no: 2,
+        title: "Beneficio: aceptar o rechazar la orden",
+        concept: "Unidad XII - Ingresos, costes economicos, coste de oportunidad e isobeneficio",
+        objective: "Usar pi = pQ - C para decidir si la orden conviene; no basta con saber producir.",
+        prompt: "Con p bajo y F positivo, que equipos generan beneficio? Que cambia si ignoramos coste de oportunidad?",
+        w: 10,
+        r: 10,
+        q: 180,
+        p: 3.2,
+        fixed: 220,
+        penalty: 1
+      },
+      {
+        no: 3,
+        title: "Isocuanta contra isocoste",
+        concept: "Unidad XIII - Minimizacion de costes, isocoste y condicion RTS = w/r",
+        objective: "Elegir L y K para cumplir Q objetivo con el menor coste posible y justificar la mezcla elegida.",
+        prompt: "Si el score no fue 100, fue por producir poco, gastar demasiado o no igualar RTS con w/r?",
+        w: 10,
+        r: 10,
+        q: 150,
+        p: 4,
+        fixed: 0,
+        penalty: 1
+      },
+      {
+        no: 4,
+        title: "Shock de precios relativos",
+        concept: "Unidad XIII - Demandas condicionadas, sustitucion y RTS decreciente",
+        objective: "Predecir antes de tocar el simulador como cambia K/L cuando el trabajo se encarece.",
+        prompt: "Que empresas pueden sustituir trabajo por capital con menos perdida tecnica? Cuales quedan mas atrapadas?",
+        w: 18,
+        r: 7,
+        q: 150,
+        p: 4,
+        fixed: 0,
+        penalty: 1
+      },
+      {
+        no: 5,
+        title: "Corto plazo, coste medio y escala",
+        concept: "Unidad XIV - Curvas de costes: costes fijos, variables, CMe, CMg y largo plazo",
+        objective: "Subir Q con F alto y observar como cambian C*, CMe*, beneficio y la ventaja de ajustar ambos factores.",
+        prompt: "El coste total sube, pero que pasa con CMe cuando se reparte F? Donde aparece la logica de escala?",
+        w: 10,
+        r: 10,
+        q: 230,
+        p: 4,
+        fixed: 450,
+        penalty: 0.9
+      },
+      {
+        no: 6,
+        title: "Reveal y formalizacion",
+        concept: "Cierre cronologico XI-XIV - tecnologia, beneficio, minimizacion de costes y curvas",
+        objective: "Pasar a Admin mode, revelar funciones oficiales y conectar cada ronda con su condicion matematica.",
+        prompt: "Cual fue el error conceptual mas comun: tecnologia, beneficio, precio relativo o coste medio?",
+        w: 10,
+        r: 10,
+        q: 150,
+        p: 4,
+        fixed: 0,
+        penalty: 1,
+        reveal: true
+      }
+    ];
+
+    const state = {
+      roundIndex: 0
+    };
+
+    const inputs = {
+      wage: document.getElementById("wage"),
+      rent: document.getElementById("rent"),
+      target: document.getElementById("target"),
+      price: document.getElementById("price"),
+      fixedCost: document.getElementById("fixedCost"),
+      penalty: document.getElementById("penalty")
+    };
+
+    function market() {
+      return {
+        w: Number(inputs.wage.value),
+        r: Number(inputs.rent.value),
+        q: Number(inputs.target.value),
+        p: Number(inputs.price.value),
+        fixed: Number(inputs.fixedCost.value),
+        penalty: Number(inputs.penalty.value)
+      };
+    }
+
+    function activeRound() {
+      return rounds[state.roundIndex];
+    }
+
+    function fmt(value, digits = 1) {
+      return Number(value).toFixed(digits);
+    }
+
+    function money(value) {
+      const rounded = Math.round(value);
+      const prefix = rounded < 0 ? "-$" : "$";
+      return prefix + Math.abs(rounded).toLocaleString("es-ES");
+    }
+
+    function production(firm, L, K) {
+      const safeL = Math.max(0.01, Number(L));
+      const safeK = Math.max(0.01, Number(K));
+      return firm.A * Math.pow(safeL, firm.alpha) * Math.pow(safeK, firm.beta);
+    }
+
+    function fixedCharge(mkt, q) {
+      return q > 0 ? mkt.fixed : 0;
+    }
+
+    function optimalVariableCost(firm, mkt) {
+      const base = mkt.q / firm.A;
+      return base * Math.pow(mkt.w / firm.alpha, firm.alpha) * Math.pow(mkt.r / firm.beta, firm.beta);
+    }
+
+    function optimalInputs(firm, mkt) {
+      const variableCost = optimalVariableCost(firm, mkt);
+      return {
+        L: firm.alpha * variableCost / mkt.w,
+        K: firm.beta * variableCost / mkt.r,
+        variableCost,
+        cost: variableCost + fixedCharge(mkt, mkt.q)
+      };
+    }
+
+    function evaluate(firm) {
+      const mkt = market();
+      const qTeam = production(firm, firm.L, firm.K);
+      const variableTeam = mkt.w * firm.L + mkt.r * firm.K;
+      const costTeam = variableTeam + fixedCharge(mkt, qTeam);
+      const opt = optimalInputs(firm, mkt);
+      const equivalentCost = variableTeam * (mkt.q / Math.max(qTeam, 0.01)) + fixedCharge(mkt, mkt.q);
+      const technicalScore = 100 * opt.cost / equivalentCost;
+      const deliveryMultiplier = Math.min(1, qTeam / mkt.q);
+      const score = Math.max(0, Math.min(100, technicalScore * (mkt.penalty === 1 ? deliveryMultiplier : Math.pow(deliveryMultiplier, mkt.penalty))));
+      const gap = Math.max(0, equivalentCost / opt.cost - 1);
+      const profitTeam = mkt.p * qTeam - costTeam;
+      const equivalentProfit = mkt.p * mkt.q - equivalentCost;
+      const optProfit = mkt.p * mkt.q - opt.cost;
+      const averageCost = costTeam / Math.max(qTeam, 0.01);
+      const optAverageCost = opt.cost / mkt.q;
+      return { qTeam, variableTeam, costTeam, averageCost, opt, equivalentCost, technicalScore, deliveryMultiplier, score, gap, profitTeam, equivalentProfit, optProfit, optAverageCost };
+    }
+
+    function scoreClass(score) {
+      if (score >= 85) return "good";
+      if (score >= 65) return "mid";
+      return "bad";
+    }
+
+    function updateOutputs() {
+      const mkt = market();
+      const round = activeRound();
+      document.getElementById("wageOut").textContent = money(mkt.w);
+      document.getElementById("rentOut").textContent = money(mkt.r);
+      document.getElementById("targetOut").textContent = fmt(mkt.q, 0);
+      document.getElementById("priceOut").textContent = money(mkt.p);
+      document.getElementById("fixedOut").textContent = money(mkt.fixed);
+      document.getElementById("penaltyOut").textContent = fmt(mkt.penalty, 2);
+      document.getElementById("roundBadge").textContent = `Ronda ${round.no}`;
+      document.getElementById("roundTitle").textContent = round.title;
+      document.getElementById("roundConcept").textContent = round.concept;
+      document.getElementById("roundObjective").textContent = round.objective;
+      document.getElementById("roundPrompt").textContent = round.prompt;
+      document.getElementById("roundKpi").textContent = round.no;
+      document.getElementById("roundKpiNote").textContent = `Q=${fmt(mkt.q, 0)} | p=${money(mkt.p)} | F=${money(mkt.fixed)}.`;
+    }
+
+    function renderTeams() {
+      const rows = document.getElementById("teamRows");
+      rows.innerHTML = "";
+      firms.forEach((firm) => {
+        const result = evaluate(firm);
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>Grupo ${firm.group}</td>
+          <td><span class="company"><span class="dot" style="background:${firm.color}">${firm.group}</span><span>${firm.company}<span class="mini">${firm.desc}</span></span></span></td>
+          <td><input class="num-input" type="number" min="1" max="80" step="1" value="${fmt(firm.L, 0)}" data-firm="${firm.group}" data-input="L" aria-label="Trabajo grupo ${firm.group}"></td>
+          <td><input class="num-input" type="number" min="1" max="80" step="1" value="${fmt(firm.K, 0)}" data-firm="${firm.group}" data-input="K" aria-label="Capital grupo ${firm.group}"></td>
+          <td>${fmt(result.qTeam, 1)}</td>
+          <td>${money(result.costTeam)}</td>
+          <td>${money(result.averageCost)}</td>
+          <td><span class="score ${scoreClass(result.profitTeam >= 0 ? 100 : 0)}">${money(result.profitTeam)}</span></td>
+          <td>${money(result.opt.cost)}</td>
+          <td><span class="score ${scoreClass(result.score)}">${fmt(result.score, 1)}</span></td>
+          <td class="admin">Q=${firm.A}L^${firm.alpha.toFixed(2)}K^${firm.beta.toFixed(2)}</td>
+          <td class="admin">L*=${fmt(result.opt.L, 1)} / K*=${fmt(result.opt.K, 1)} | pi*=${money(result.optProfit)}</td>
+        `;
+        rows.appendChild(tr);
+      });
+
+      rows.querySelectorAll("input").forEach((input) => {
+        input.addEventListener("input", (event) => {
+          const firm = firms.find((item) => item.group === Number(event.target.dataset.firm));
+          firm[event.target.dataset.input] = Math.max(1, Number(event.target.value || 1));
+          render();
+        });
+      });
+    }
+
+    function renderRanking() {
+      const rows = firms
+        .map((firm) => ({ firm, result: evaluate(firm) }))
+        .sort((a, b) => b.result.score - a.result.score);
+      const container = document.getElementById("ranking");
+      container.innerHTML = "";
+      rows.forEach((row, index) => {
+        const div = document.createElement("div");
+        div.className = "rank-row";
+        div.innerHTML = `
+          <div class="rank-no">${index + 1}</div>
+          <div>
+            <strong>${row.firm.short}</strong>
+            <div class="note">Q=${fmt(row.result.qTeam, 1)} | pi=${money(row.result.profitTeam)} | gap coste ${fmt(row.result.gap * 100, 1)}%</div>
+            <div class="bar"><div class="bar-fill" style="width:${Math.max(4, row.result.score)}%; background:${row.firm.color}"></div></div>
+          </div>
+          <div class="score ${scoreClass(row.result.score)}">${fmt(row.result.score, 1)}</div>
+        `;
+        container.appendChild(div);
+      });
+
+      const leader = rows[0];
+      const avgGap = rows.reduce((sum, row) => sum + row.result.gap, 0) / rows.length;
+      document.getElementById("leaderName").textContent = leader.firm.short;
+      document.getElementById("bestScore").textContent = fmt(leader.result.score, 1);
+      document.getElementById("avgGap").textContent = fmt(avgGap * 100, 1) + "%";
+    }
+
+    function renderCards() {
+      const cards = document.getElementById("firmCards");
+      cards.innerHTML = "";
+      firms.forEach((firm) => {
+        const card = document.createElement("article");
+        card.className = "firm-card";
+        card.innerHTML = `
+          <strong><span>${firm.company}</span><span>G${firm.group}</span></strong>
+          <p>${firm.desc}</p>
+          <p class="admin" style="margin-top:8px;color:${firm.color}">Funcion: Q=${firm.A}L^${firm.alpha.toFixed(2)}K^${firm.beta.toFixed(2)}</p>
+        `;
+        cards.appendChild(card);
+      });
+    }
+
+    function renderAdmin() {
+      const body = document.getElementById("adminRows");
+      body.innerHTML = "";
+      firms.forEach((firm) => {
+        const result = evaluate(firm);
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${firm.company}</td>
+          <td>${firm.A}</td>
+          <td>${firm.alpha.toFixed(2)}</td>
+          <td>${firm.beta.toFixed(2)}</td>
+          <td>${fmt(result.opt.L, 2)}</td>
+          <td>${fmt(result.opt.K, 2)}</td>
+          <td>${money(result.opt.cost)}</td>
+          <td>${money(result.optAverageCost)}</td>
+          <td>${money(result.optProfit)}</td>
+          <td>${fmt(result.opt.K / result.opt.L, 2)}</td>
+        `;
+        body.appendChild(tr);
+      });
+    }
+
+    function diagnostics() {
+      const checks = [];
+      const mkt = market();
+      firms.forEach((firm) => {
+        const scale = Math.abs(firm.alpha + firm.beta - 1) < 0.000001;
+        checks.push({ ok: scale, name: `${firm.short}: alpha + beta = 1`, detail: `${(firm.alpha + firm.beta).toFixed(4)}` });
+        const opt = optimalInputs(firm, mkt);
+        const qOpt = production(firm, opt.L, opt.K);
+        checks.push({ ok: Math.abs(qOpt - mkt.q) / mkt.q < 0.001, name: `${firm.short}: optimo produce Q objetivo`, detail: `Q*=${fmt(qOpt, 3)}` });
+        const saved = { L: firm.L, K: firm.K };
+        firm.L = opt.L;
+        firm.K = opt.K;
+        const score = evaluate(firm).score;
+        firm.L = saved.L;
+        firm.K = saved.K;
+        checks.push({ ok: Math.abs(score - 100) < 0.001, name: `${firm.short}: score optimo = 100`, detail: `score=${fmt(score, 4)}` });
+      });
+      return checks;
+    }
+
+    function renderDiagnostics() {
+      const container = document.getElementById("diagnostics");
+      const checks = diagnostics();
+      container.innerHTML = "";
+      checks.forEach((check) => {
+        const div = document.createElement("div");
+        div.className = "diag";
+        div.innerHTML = `
+          <div class="status ${check.ok ? "" : "fail"}">${check.ok ? "✓" : "!"}</div>
+          <div><strong>${check.name}</strong><p class="note">${check.detail}</p></div>
+          <div>${check.ok ? "PASS" : "FAIL"}</div>
+        `;
+        container.appendChild(div);
+      });
+      const failed = checks.filter((check) => !check.ok).length;
+      addLog("Diagnostics", failed === 0 ? "Todos los tests pasaron." : `${failed} tests fallaron.`);
+    }
+
+    function addLog(title, detail) {
+      const log = document.getElementById("log");
+      const item = document.createElement("div");
+      item.className = "log-item";
+      item.innerHTML = `<strong>${title}</strong><br>${detail}`;
+      log.prepend(item);
+    }
+
+    function applyRound(index, shouldLog = true) {
+      state.roundIndex = Math.max(0, Math.min(rounds.length - 1, index));
+      const round = activeRound();
+      inputs.wage.value = round.w;
+      inputs.rent.value = round.r;
+      inputs.target.value = round.q;
+      inputs.price.value = round.p;
+      inputs.fixedCost.value = round.fixed;
+      inputs.penalty.value = round.penalty;
+      if (round.reveal) {
+        setView("admin");
+      } else if (document.body.dataset.view === "admin") {
+        setView("live");
+      }
+      if (shouldLog) {
+        addLog(`Ronda ${round.no}`, `${round.title}. Escenario aplicado: w=${round.w}, r=${round.r}, Q=${round.q}, p=${round.p}, F=${round.fixed}.`);
+      }
+      render();
+    }
+
+    function render() {
+      updateOutputs();
+      renderTeams();
+      renderRanking();
+      renderCards();
+      renderAdmin();
+    }
+
+    function setView(view) {
+      document.body.dataset.view = view;
+      document.querySelectorAll(".view-tabs button").forEach((button) => {
+        button.setAttribute("aria-pressed", button.dataset.view === view ? "true" : "false");
+      });
+      if (view === "test") renderDiagnostics();
+      addLog("Modo", `Vista activa: ${view}.`);
+      render();
+    }
+
+    Object.values(inputs).forEach((input) => input.addEventListener("input", render));
+
+    document.querySelectorAll(".view-tabs button").forEach((button) => {
+      button.addEventListener("click", () => setView(button.dataset.view));
+    });
+
+    document.getElementById("prevRound").addEventListener("click", () => {
+      applyRound(state.roundIndex - 1);
+    });
+
+    document.getElementById("nextRound").addEventListener("click", () => {
+      applyRound(state.roundIndex + 1);
+    });
+
+    document.getElementById("applyRound").addEventListener("click", () => {
+      applyRound(state.roundIndex);
+    });
+
+    document.querySelectorAll(".shock").forEach((button) => {
+      button.addEventListener("click", () => {
+        const type = button.dataset.shock;
+        if (type === "labor") inputs.wage.value = 17;
+        if (type === "capital") inputs.rent.value = 17;
+        if (type === "orderUp") inputs.target.value = 220;
+        if (type === "reset") {
+          inputs.wage.value = 10;
+          inputs.rent.value = 10;
+          inputs.target.value = 150;
+          inputs.price.value = 4;
+          inputs.fixedCost.value = 0;
+          inputs.penalty.value = 1;
+        }
+        addLog("Shock aplicado", button.textContent);
+        render();
+      });
+    });
+
+    document.getElementById("fillNearOptimal").addEventListener("click", () => {
+      firms.forEach((firm, index) => {
+        const opt = optimalInputs(firm, market());
+        const nudge = 1 + ((index % 3) - 1) * 0.08;
+        firm.L = Math.max(1, Math.round(opt.L * nudge));
+        firm.K = Math.max(1, Math.round(opt.K / nudge));
+      });
+      addLog("Carga de prueba", "Equipos cargados cerca del optimo para revisar scoring.");
+      render();
+    });
+
+    document.getElementById("randomize").addEventListener("click", () => {
+      firms.forEach((firm) => {
+        firm.L = Math.floor(5 + Math.random() * 34);
+        firm.K = Math.floor(5 + Math.random() * 34);
+      });
+      addLog("Randomizar", "Nuevos L y K asignados.");
+      render();
+    });
+
+    document.getElementById("resetTeams").addEventListener("click", () => {
+      const defaults = [[18,10],[12,18],[13,17],[10,20],[17,14],[8,22]];
+      firms.forEach((firm, index) => {
+        firm.L = defaults[index][0];
+        firm.K = defaults[index][1];
+      });
+      addLog("Reset equipos", "Inputs iniciales restaurados.");
+      render();
+    });
+
+    document.getElementById("runTests").addEventListener("click", renderDiagnostics);
+
+    addLog("Listo", "Empieza en Live mode. Usa Test antes de clase y Admin para revisar funciones.");
+    applyRound(0, false);
+  </script>
+</body>
+</html>
