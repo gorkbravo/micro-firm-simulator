@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Micro Firm Simulator | Equipo 6: Ron Barceló/Brugal</title>
+  <style>:root{--accent:#7c2d12;--cream:#fff7ed}
+    :root{--ink:#17202a;--muted:#667085;--line:#d8dee8;--soft:#f6f8fb;--panel:#fff;--blue:#2563eb;--accent:#2563eb;--cream:#f8fafc;--shadow:0 16px 38px rgba(23,32,42,.12)}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:linear-gradient(180deg,#eef3f8 0%,#fbfcfe 45%,#edf1f5 100%);line-height:1.48}
+    .booklet{width:min(980px,calc(100% - 32px));margin:0 auto;padding:28px 0 44px}
+    .cover,.page{background:rgba(255,255,255,.97);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);padding:28px;margin:0 0 18px;overflow:hidden}
+    .cover{display:grid;grid-template-columns:1.05fr .95fr;gap:24px;align-items:center;min-height:560px;background:radial-gradient(circle at 10% 10%,color-mix(in srgb,var(--accent) 16%,transparent),transparent 32%),linear-gradient(135deg,#fff,var(--cream) 58%,#f3f6fb)}
+    .eyebrow{margin:0 0 8px;color:var(--blue);font-size:.78rem;font-weight:850;text-transform:uppercase;letter-spacing:.08em}
+    h1,h2,h3{margin:0;line-height:1.12}
+    h1{font-size:3rem;letter-spacing:-.02em}
+    h2{font-size:1.58rem;margin-bottom:14px}
+    h3{font-size:1.05rem;margin:16px 0 8px;color:#344054}
+    p{margin:0 0 11px}.subtitle{font-size:1.08rem;color:var(--muted);margin-top:14px}
+    .badge-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.badge{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:6px 10px;background:#fff;color:#344054;font-weight:750;font-size:.86rem}
+    .hero-panel{width:100%;border-radius:8px;border:1px solid var(--line);background:#fff;overflow:hidden}.hero-panel svg{display:block;width:100%;height:auto}
+    figure{margin:0}figcaption{color:var(--muted);font-size:.82rem;margin-top:7px}
+    .note,.rule{border:1px solid var(--line);border-radius:8px;background:var(--soft);padding:12px 14px;color:#344054}
+    .rule{border-color:#e6d6c3;background:var(--cream);margin-top:18px}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .card{border:1px solid var(--line);border-radius:8px;background:#fff;padding:14px}.metric{font-size:.8rem;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.05em}.metric strong{display:block;color:var(--ink);font-size:1.05rem;text-transform:none;letter-spacing:0;margin-top:4px}
+    ul{margin:0 0 12px 20px;padding:0}li{margin:5px 0}
+    .flow{border:1px solid var(--line);border-radius:8px;background:#fff;padding:12px;margin:12px 0}svg text{font-family:Inter,Arial,sans-serif}
+    table{width:100%;border-collapse:collapse;margin:10px 0 16px;font-size:.94rem}th,td{border:1px solid var(--line);padding:9px;vertical-align:top;text-align:left}th{background:#eef3f8;color:#475467;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em}
+    .blank{height:34px}.longblank{height:62px}.checklist td:nth-child(odd){width:32px;text-align:center;color:var(--muted);font-size:1.05rem}.round{page-break-inside:avoid;border:1px solid var(--line);border-radius:8px;padding:14px;margin:14px 0;background:#fff}.round h3{margin-top:0;color:var(--blue)}.scenario{display:inline-block;background:#eef3f8;border:1px solid var(--line);border-radius:8px;padding:6px 9px;color:#344054;font-weight:780;font-size:.88rem;margin:4px 0 10px}.small{font-size:.86rem;color:var(--muted)}.source-list li{margin-bottom:7px}
+    @media(max-width:760px){.cover,.grid-2,.grid-3{grid-template-columns:1fr}.cover,.page{padding:20px}h1{font-size:2.35rem}}
+    @media print{@page{size:Letter;margin:.45in}body{background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}.booklet{width:100%;padding:0}.cover,.page{box-shadow:none;border-radius:0;margin:0;min-height:auto;break-after:page}.page:last-child{break-after:auto}a{color:inherit;text-decoration:none}}
+  </style>
+</head>
+<body>
+  <main class="booklet">
+    <section class="cover">
+      <div>
+        <p class="eyebrow">Micro Firm Simulator</p>
+        <h1>Equipo 6<br>Ron Barceló/Brugal</h1>
+        <p class="subtitle">Booklet de empresa para inferir tecnología, costes y decisiones de producción.</p>
+        <div class="badge-row">
+          <span class="badge">Microeconomía I</span>
+          <span class="badge">Tecnología</span>
+          <span class="badge">Costes</span>
+          <span class="badge">Decisiones en 4 minutos</span>
+        </div>
+        <div class="rule">
+          <strong>Regla del juego.</strong> La empresa es real; la función de producción del simulador no es una estimación empírica de Ron Barceló/Brugal. Es una función didáctica inspirada en rasgos productivos de la industria para practicar tecnología, beneficio, minimización de costes y curvas de costes.
+        </div>
+      </div>
+      <figure>
+        
+    <div class="hero-panel" role="img" aria-label="Destilería y barricas de ron">
+      <svg viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#667085"/></marker></defs>
+        <rect width="500" height="300" fill="#fff7ed"/>
+        <path d="M0 230 C80 200 120 255 205 218 C280 186 340 210 500 178 L500 300 L0 300 Z" fill="#ffffff" opacity=".72"/>
+        <text x="250" y="36" text-anchor="middle" font-size="18" font-weight="850" fill="#7c2d12">Ron Barceló/Brugal</text>
+        <line x1="101" y1="106" x2="136" y2="106" stroke="#667085" stroke-width="2" marker-end="url(#arrow)"/><line x1="187" y1="106" x2="222" y2="106" stroke="#667085" stroke-width="2" marker-end="url(#arrow)"/><line x1="273" y1="106" x2="308" y2="106" stroke="#667085" stroke-width="2" marker-end="url(#arrow)"/><line x1="359" y1="106" x2="394" y2="106" stroke="#667085" stroke-width="2" marker-end="url(#arrow)"/>
+        
+      <rect x="28" y="74" width="70" height="64" rx="12" fill="#fff7ed" stroke="#d8dee8"/>
+      <circle cx="63" cy="55" r="18" fill="#7c2d12" opacity="0.16"/>
+      <text x="63" y="109" text-anchor="middle" font-size="10.5" font-weight="750" fill="#17202a">Caña/melaza</text>
+    
+      <rect x="114" y="74" width="70" height="64" rx="12" fill="#ffffff" stroke="#d8dee8"/>
+      <circle cx="149" cy="55" r="22" fill="#7c2d12" opacity="0.19"/>
+      <text x="149" y="109" text-anchor="middle" font-size="10.5" font-weight="750" fill="#17202a">Fermentación</text>
+    
+      <rect x="200" y="74" width="70" height="64" rx="12" fill="#fff7ed" stroke="#d8dee8"/>
+      <circle cx="235" cy="55" r="18" fill="#7c2d12" opacity="0.22"/>
+      <text x="235" y="109" text-anchor="middle" font-size="10.5" font-weight="750" fill="#17202a">Destilación</text>
+    
+      <rect x="286" y="74" width="70" height="64" rx="12" fill="#ffffff" stroke="#d8dee8"/>
+      <circle cx="321" cy="55" r="22" fill="#7c2d12" opacity="0.25"/>
+      <text x="321" y="109" text-anchor="middle" font-size="10.5" font-weight="750" fill="#17202a">Barricas</text>
+    
+      <rect x="372" y="74" width="70" height="64" rx="12" fill="#fff7ed" stroke="#d8dee8"/>
+      <circle cx="407" cy="55" r="18" fill="#7c2d12" opacity="0.28"/>
+      <text x="407" y="109" text-anchor="middle" font-size="10.5" font-weight="750" fill="#17202a">Botella</text>
+    
+        <rect x="64" y="194" width="372" height="48" rx="24" fill="#ffffff" stroke="#d8dee8"/>
+        <text x="250" y="214" text-anchor="middle" font-size="12" fill="#475467">Diagrama generado para uso pedagógico.</text>
+        <text x="250" y="231" text-anchor="middle" font-size="12" fill="#475467">Traducir el caso real a L, K y Q.</text>
+      </svg>
+    </div>
+  
+        <figcaption>Destilería y barricas de ron. Visual generado para impresión y discusión en clase.</figcaption>
+      </figure>
+    </section>
+
+    <section class="page">
+      <p class="eyebrow">1. Contexto real</p>
+      <h2>La empresa real que van a representar</h2>
+      <div class="grid-2">
+        <div><p><strong>Ron Barceló/Brugal</strong> representa en la actividad la industria dominicana del ron: fermentación, destilación, envejecimiento, mezcla, embotellado, inventario y marca.</p><p>El caso es útil porque enseña una tecnología donde el capital no es solo maquinaria visible. También cuentan barricas, almacenes, tiempo de envejecimiento, control de calidad, inventario y capacidad de embotellado.</p><p>Para el simulador, la pista central es que más horas de trabajo ayudan, pero no reemplazan rápidamente años de barrica, destilería, tanques, almacenes ni líneas de embotellado.</p></div>
+        <div>
+          <div class="note">
+            <strong>Datos para anclar el caso</strong>
+            <ul><li>Industria dominicana de ron y bebidas envejecidas.</li><li>Actividades clave: fermentación, destilación, barricas, mezcla, control, embotellado e inventario.</li><li>El tiempo y la capacidad de almacenamiento son parte de la tecnología.</li><li>Pista didáctica: tecnología fuertemente capital-intensiva.</li></ul>
+          </div>
+          <div class="note" style="margin-top:12px">
+            <strong>Descripción del simulador.</strong> Destilería, barricas, embotellado e inventario envejecido.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page">
+      <p class="eyebrow">2. Pistas productivas</p>
+      <h2>Cómo produce valor Ron Barceló/Brugal</h2>
+      <p>La cadena del ron pasa por materia prima, fermentación, destilación, maduración en barricas, selección, mezcla, filtrado, embotellado y distribución. No todo puede acelerarse con más personas.</p><p>El trabajo experto importa en control, mezcla, laboratorio, mantenimiento y operación. Pero barricas, almacenes, destilería, líneas de embotellado e inventario envejecido hacen que K sea especialmente difícil de sustituir en el corto plazo.</p>
+      
+    <div class="flow" aria-label="Diagrama del proceso productivo">
+      <svg viewBox="0 0 900 190" width="100%" height="190" role="img">
+        <defs><marker id="arrow2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#667085"/></marker></defs>
+        
+      <rect x="20" y="32" width="132" height="82" rx="12" fill="#fff7ed" stroke="#d8dee8"/>
+      <text x="86" y="66" text-anchor="middle" font-size="14" font-weight="750" fill="#17202a">Caña/melaza</text>
+      <text x="86" y="90" text-anchor="middle" font-size="11.5" fill="#667085">etapa 1</text>
+    
+      <rect x="196" y="32" width="132" height="82" rx="12" fill="#ffffff" stroke="#d8dee8"/>
+      <text x="262" y="66" text-anchor="middle" font-size="14" font-weight="750" fill="#17202a">Fermentación</text>
+      <text x="262" y="90" text-anchor="middle" font-size="11.5" fill="#667085">etapa 2</text>
+    
+      <rect x="372" y="32" width="132" height="82" rx="12" fill="#fff7ed" stroke="#d8dee8"/>
+      <text x="438" y="66" text-anchor="middle" font-size="14" font-weight="750" fill="#17202a">Destilación</text>
+      <text x="438" y="90" text-anchor="middle" font-size="11.5" fill="#667085">etapa 3</text>
+    
+      <rect x="548" y="32" width="132" height="82" rx="12" fill="#ffffff" stroke="#d8dee8"/>
+      <text x="614" y="66" text-anchor="middle" font-size="14" font-weight="750" fill="#17202a">Barricas</text>
+      <text x="614" y="90" text-anchor="middle" font-size="11.5" fill="#667085">etapa 4</text>
+    
+      <rect x="724" y="32" width="110" height="82" rx="12" fill="#fff7ed" stroke="#d8dee8"/>
+      <text x="779" y="66" text-anchor="middle" font-size="14" font-weight="750" fill="#17202a">Botella</text>
+      <text x="779" y="90" text-anchor="middle" font-size="11.5" fill="#667085">etapa 5</text>
+    
+        <line x1="156" y1="73" x2="192" y2="73" stroke="#667085" stroke-width="2" marker-end="url(#arrow2)"/><line x1="332" y1="73" x2="368" y2="73" stroke="#667085" stroke-width="2" marker-end="url(#arrow2)"/><line x1="508" y1="73" x2="544" y2="73" stroke="#667085" stroke-width="2" marker-end="url(#arrow2)"/><line x1="684" y1="73" x2="720" y2="73" stroke="#667085" stroke-width="2" marker-end="url(#arrow2)"/>
+        <rect x="174" y="142" width="552" height="28" rx="14" fill="#f6f8fb" stroke="#d8dee8"/>
+        <text x="450" y="161" text-anchor="middle" font-size="13" fill="#475467">La decisión del equipo consiste en traducir esta cadena real a L, K y Q dentro del simulador.</text>
+      </svg>
+    </div>
+  
+      <div class="grid-3">
+        <div class="card"><span class="metric">Trabajo productivo</span><strong>Maestros roneros, laboratorio, operarios, mezcla, mantenimiento, empaque y logística.</strong></div>
+        <div class="card"><span class="metric">Capital productivo</span><strong>Destilería, columnas, tanques, barricas, bodegas de envejecimiento, líneas de embotellado e inventario.</strong></div>
+        <div class="card"><span class="metric">Producto Q</span><strong>Ron envejecido, mezclado, embotellado y listo para venta.</strong></div>
+      </div>
+      <div class="note" style="margin-top:14px">
+        <strong>Pregunta guía.</strong> Si la marca recibe una orden grande hoy, ¿qué parte no se puede crear de inmediato solo contratando más personas: la mano de obra o el capital envejecido en barricas?
+      </div>
+    </section>
+
+    <section class="page">
+      <p class="eyebrow">3. Simulador</p>
+      <h2>Traducción al lenguaje del simulador</h2>
+      <p>En el simulador, la empresa se resume con una función de producción de tipo Cobb-Douglas:</p>
+      <div class="note" style="text-align:center;font-size:1.15rem"><strong>Q = A * L<sup>alpha</sup> * K<sup>beta</sup></strong></div>
+      <p><strong>L</strong> representa trabajo productivo: personas que operan, supervisan, mantienen, transportan o atienden decisiones de producción. <strong>K</strong> representa capital productivo: maquinaria, planta, equipos, tecnología, infraestructura e inventario físico que ayudan a producir. <strong>Q</strong> representa la cantidad de producto final vendible.</p>
+      <p>La función oficial del simulador está oculta hasta el final. Antes de jugar, propongan una hipótesis razonada. No intenten adivinar números perfectos; intenten que los números cuenten una historia coherente sobre la tecnología de su empresa.</p>
+      <table>
+        <thead><tr><th>Parámetro</th><th>Qué significa</th><th>Propuesta del equipo</th><th>Justificación breve</th></tr></thead>
+        <tbody>
+          <tr><td><strong>A</strong></td><td>Productividad total de la tecnología.</td><td class="blank"></td><td class="blank"></td></tr>
+          <tr><td><strong>alpha</strong></td><td>Peso relativo del trabajo en la producción.</td><td class="blank"></td><td class="blank"></td></tr>
+          <tr><td><strong>beta</strong></td><td>Peso relativo del capital en la producción.</td><td class="blank"></td><td class="blank"></td></tr>
+        </tbody>
+      </table>
+      <div class="grid-2">
+        <div class="card"><h3>Cómo pensar L</h3><p>Maestros roneros, laboratorio, operarios, mezcla, mantenimiento, empaque y logística.</p></div>
+        <div class="card"><h3>Cómo pensar K</h3><p>Destilería, columnas, tanques, barricas, bodegas de envejecimiento, líneas de embotellado e inventario.</p></div>
+      </div>
+    </section>
+
+    <section class="page">
+      <p class="eyebrow">4. Respuestas</p>
+      <h2>Hojas de respuesta del Equipo 6</h2>
+      <p>En cada ronda tienen 4 minutos. Primero tomen la decisión conceptual que pide el simulador. Luego elijan L y K. Al final, comparen el resultado con el score, el beneficio y el feedback de coherencia.</p>
+      
+    <div class="round">
+      <h3>Ronda 1 - Mapa tecnológico de la empresa</h3>
+      <span class="scenario">Q = 120 | w = 10 | r = 10 | p = 4 | F = 0</span>
+      <table class="checklist"><tbody><tr><td>□</td><td>Trabajo intensivo</td><td>□</td><td>Capital intensivo</td><td>□</td><td>Balanceada</td></tr></tbody></table>
+      <table><tbody><tr><th>L elegido</th><td class="blank"></td><th>K elegido</th><td class="blank"></td></tr><tr><th>A propuesto</th><td class="blank"></td><th>Alpha / beta propuestos</th><td class="blank"></td></tr><tr><th>Una pista concreta del booklet</th><td colspan="3" class="longblank"></td></tr><tr><th>Nota de ronda</th><td colspan="3" class="small">Objetivo: leer el booklet, clasificar la tecnología, inferir intensidad relativa de L/K y proponer A, alpha y beta.</td></tr></tbody></table>
+    </div>
+  
+    <div class="round">
+      <h3>Ronda 2 - Beneficio: aceptar o rechazar la orden</h3>
+      <span class="scenario">Q = 180 | w = 10 | r = 10 | p = 3.2 | F = 220</span>
+      <table class="checklist"><tbody><tr><td>□</td><td>Aceptar la orden</td><td>□</td><td>Rechazar la orden</td></tr></tbody></table>
+      <table><tbody><tr><th>L elegido</th><td class="blank"></td><th>K elegido</th><td class="blank"></td></tr><tr><th>Coste estimado</th><td class="blank"></td><th>Beneficio estimado: pQ - C</th><td class="blank"></td></tr><tr><th>Razón económica</th><td colspan="3" class="longblank"></td></tr><tr><th>Nota de ronda</th><td colspan="3" class="small">Objetivo: usar pi = pQ - C para decidir si la orden conviene; no basta con saber producir.</td></tr></tbody></table>
+    </div>
+  
+    <div class="round">
+      <h3>Ronda 3 - Isocuanta contra isocoste</h3>
+      <span class="scenario">Q = 150 | w = 10 | r = 10 | p = 4 | F = 0</span>
+      <table class="checklist"><tbody><tr><td>□</td><td>Moverse hacia más L</td><td>□</td><td>Moverse hacia más K</td><td>□</td><td>Mezcla balanceada</td></tr></tbody></table>
+      <table><tbody><tr><th>L elegido</th><td class="blank"></td><th>K elegido</th><td class="blank"></td></tr><tr><th>Coste variable</th><td class="blank"></td><th>Q esperado</th><td class="blank"></td></tr><tr><th>Cómo conectan isocuanta e isocoste</th><td colspan="3" class="longblank"></td></tr><tr><th>Nota de ronda</th><td colspan="3" class="small">Objetivo: justificar la mezcla usando isocuanta, isocoste y precios de factores.</td></tr></tbody></table>
+    </div>
+  
+    </section>
+
+    <section class="page">
+      <p class="eyebrow">4. Respuestas</p>
+      <h2>Hojas de respuesta del Equipo 6, continuación</h2>
+      
+    <div class="round">
+      <h3>Ronda 4 - Shock de precios relativos</h3>
+      <span class="scenario">Q = 150 | w = 18 | r = 7 | p = 4 | F = 0</span>
+      <table class="checklist"><tbody><tr><td>□</td><td>K/L sube</td><td>□</td><td>K/L baja</td><td>□</td><td>K/L casi igual</td></tr></tbody></table>
+      <table><tbody><tr><th>L elegido</th><td class="blank"></td><th>K elegido</th><td class="blank"></td></tr><tr><th>Nuevo K/L</th><td class="blank"></td><th>Coste estimado</th><td class="blank"></td></tr><tr><th>Intuición del cambio</th><td colspan="3" class="longblank"></td></tr><tr><th>Nota de ronda</th><td colspan="3" class="small">Objetivo: conectar precios relativos con demandas condicionadas cuando el trabajo se encarece y el capital se abarata.</td></tr></tbody></table>
+    </div>
+  
+    <div class="round">
+      <h3>Ronda 5 - Corto plazo, coste medio y escala</h3>
+      <span class="scenario">Q = 230 | w = 10 | r = 10 | p = 4 | F = 450</span>
+      <table class="checklist"><tbody><tr><td>□</td><td>Aceptar escala</td><td>□</td><td>Rechazar por CMe</td><td>□</td><td>Recalcular CMe</td></tr></tbody></table>
+      <table><tbody><tr><th>L elegido</th><td class="blank"></td><th>K elegido</th><td class="blank"></td></tr><tr><th>Coste total</th><td class="blank"></td><th>CMe estimado</th><td class="blank"></td></tr><tr><th>Decisión final y razón</th><td colspan="3" class="longblank"></td></tr><tr><th>Nota de ronda</th><td colspan="3" class="small">Objetivo: observar cómo cambian C*, CMe*, beneficio y la ventaja de ajustar ambos factores cuando se reparte un coste fijo.</td></tr></tbody></table>
+    </div>
+  
+    <div class="round">
+      <h3>Ronda 6 - Reveal y formalización</h3>
+      <span class="scenario">Q = 150 | w = 10 | r = 10 | p = 4 | F = 0</span>
+      
+      <table><tbody><tr><th>Función revelada por el profesor</th><td colspan="3" class="blank"></td></tr><tr><th>¿Qué se acercó a nuestra hipótesis inicial?</th><td colspan="3" class="longblank"></td></tr><tr><th>¿Qué error conceptual corregimos?</th><td colspan="3" class="longblank"></td></tr><tr><th>Nota de ronda</th><td colspan="3" class="small">Esta ronda no es competitiva. El profesor pasa a Admin mode y revela las fórmulas oficiales.</td></tr></tbody></table>
+    </div>
+  
+    </section>
+
+    <section class="page">
+      <p class="eyebrow">Fuentes</p>
+      <h2>Fuentes consultadas</h2>
+      <ul class="source-list"><li>Ron Barceló, sitio oficial: producción, caña propia, calidad y portafolio. <a href="https://ronbarcelo.com/en/">https://ronbarcelo.com/en/</a></li><li>Brugal, sitio oficial: maestros roneros, selección de casks y proceso de añejamiento. <a href="https://www.brugal-rum.com/en">https://www.brugal-rum.com/en</a></li><li>Repositorio micro-firm-simulator: mecánica de rondas, escenarios y scoring. <a href="../../micro-firm-simulator.html">../../micro-firm-simulator.html</a></li></ul>
+      <div class="note">
+        <strong>Recordatorio para el equipo.</strong> No están buscando la respuesta perfecta en internet. Están usando información real para construir una hipótesis económica. La nota importante no es memorizar datos, sino traducir el caso real a una tecnología con L, K, Q, costes y beneficio.
+      </div>
+    </section>
+  </main>
+</body>
+</html>
