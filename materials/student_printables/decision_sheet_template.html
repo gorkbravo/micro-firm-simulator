@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Micro Firm Simulator | Plantilla reusable de decisión</title>
+  <style>:root{--accent:#2563eb;--cream:#f8fafc}
+    :root{--ink:#17202a;--muted:#667085;--line:#d8dee8;--soft:#f6f8fb;--panel:#fff;--blue:#2563eb;--accent:#2563eb;--cream:#f8fafc;--shadow:0 16px 38px rgba(23,32,42,.12)}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:linear-gradient(180deg,#eef3f8 0%,#fbfcfe 45%,#edf1f5 100%);line-height:1.48}
+    .booklet{width:min(980px,calc(100% - 32px));margin:0 auto;padding:28px 0 44px}
+    .cover,.page{background:rgba(255,255,255,.97);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);padding:28px;margin:0 0 18px;overflow:hidden}
+    .cover{display:grid;grid-template-columns:1.05fr .95fr;gap:24px;align-items:center;min-height:560px;background:radial-gradient(circle at 10% 10%,color-mix(in srgb,var(--accent) 16%,transparent),transparent 32%),linear-gradient(135deg,#fff,var(--cream) 58%,#f3f6fb)}
+    .eyebrow{margin:0 0 8px;color:var(--blue);font-size:.78rem;font-weight:850;text-transform:uppercase;letter-spacing:.08em}
+    h1,h2,h3{margin:0;line-height:1.12}
+    h1{font-size:3rem;letter-spacing:-.02em}
+    h2{font-size:1.58rem;margin-bottom:14px}
+    h3{font-size:1.05rem;margin:16px 0 8px;color:#344054}
+    p{margin:0 0 11px}.subtitle{font-size:1.08rem;color:var(--muted);margin-top:14px}
+    .badge-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.badge{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:6px 10px;background:#fff;color:#344054;font-weight:750;font-size:.86rem}
+    .hero-panel{width:100%;border-radius:8px;border:1px solid var(--line);background:#fff;overflow:hidden}.hero-panel svg{display:block;width:100%;height:auto}
+    figure{margin:0}figcaption{color:var(--muted);font-size:.82rem;margin-top:7px}
+    .note,.rule{border:1px solid var(--line);border-radius:8px;background:var(--soft);padding:12px 14px;color:#344054}
+    .rule{border-color:#e6d6c3;background:var(--cream);margin-top:18px}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .card{border:1px solid var(--line);border-radius:8px;background:#fff;padding:14px}.metric{font-size:.8rem;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.05em}.metric strong{display:block;color:var(--ink);font-size:1.05rem;text-transform:none;letter-spacing:0;margin-top:4px}
+    ul{margin:0 0 12px 20px;padding:0}li{margin:5px 0}
+    .flow{border:1px solid var(--line);border-radius:8px;background:#fff;padding:12px;margin:12px 0}svg text{font-family:Inter,Arial,sans-serif}
+    table{width:100%;border-collapse:collapse;margin:10px 0 16px;font-size:.94rem}th,td{border:1px solid var(--line);padding:9px;vertical-align:top;text-align:left}th{background:#eef3f8;color:#475467;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em}
+    .blank{height:34px}.longblank{height:62px}.checklist td:nth-child(odd){width:32px;text-align:center;color:var(--muted);font-size:1.05rem}.round{page-break-inside:avoid;border:1px solid var(--line);border-radius:8px;padding:14px;margin:14px 0;background:#fff}.round h3{margin-top:0;color:var(--blue)}.scenario{display:inline-block;background:#eef3f8;border:1px solid var(--line);border-radius:8px;padding:6px 9px;color:#344054;font-weight:780;font-size:.88rem;margin:4px 0 10px}.small{font-size:.86rem;color:var(--muted)}.source-list li{margin-bottom:7px}
+    @media(max-width:760px){.cover,.grid-2,.grid-3{grid-template-columns:1fr}.cover,.page{padding:20px}h1{font-size:2.35rem}}
+    @media print{@page{size:Letter;margin:.45in}body{background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}.booklet{width:100%;padding:0}.cover,.page{box-shadow:none;border-radius:0;margin:0;min-height:auto;break-after:page}.page:last-child{break-after:auto}a{color:inherit;text-decoration:none}}
+  .cover{min-height:auto;display:block}.page.compact .round{margin:10px 0;padding:12px}.page.compact h2{margin-bottom:8px}</style>
+</head>
+<body>
+  <main class="booklet">
+    <section class="cover">
+      <p class="eyebrow">Micro Firm Simulator</p>
+      <h1>Plantilla reusable<br>de decisión</h1>
+      <p class="subtitle">Una copia por equipo cuando quieran separar las respuestas del booklet de empresa.</p>
+      <div class="rule"><strong>Regla del juego.</strong> La función oficial queda oculta hasta el cierre. Cada equipo registra una decisión conceptual y una decisión numérica por ronda.</div>
+      <table>
+        <tbody>
+          <tr><th>Equipo</th><td class="blank"></td><th>Empresa</th><td class="blank"></td></tr>
+          <tr><th>Integrantes</th><td colspan="3" class="longblank"></td></tr>
+          <tr><th>Hipótesis inicial</th><td colspan="3" class="longblank">A = _____ | alpha = _____ | beta = _____</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="page compact">
+      <p class="eyebrow">Rondas 1 a 3</p>
+      <h2>Decisiones del equipo</h2>
+      
+    <div class="round">
+      <h3>Ronda 1 - Mapa tecnológico de la empresa</h3>
+      <span class="scenario">Q = 120 | w = 10 | r = 10 | p = 4 | F = 0</span>
+      <table class="checklist"><tbody><tr><td>□</td><td>Trabajo intensivo</td><td>□</td><td>Capital intensivo</td><td>□</td><td>Balanceada</td></tr></tbody></table>
+      <table><tbody><tr><th>L elegido</th><td class="blank"></td><th>K elegido</th><td class="blank"></td></tr><tr><th>A propuesto</th><td class="blank"></td><th>Alpha / beta propuestos</th><td class="blank"></td></tr><tr><th>Una pista concreta del booklet</th><td colspan="3" class="longblank"></td></tr><tr><th>Nota de ronda</th><td colspan="3" class="small">Objetivo: leer el booklet, clasificar la tecnología, inferir intensidad relativa de L/K y proponer A, alpha y beta.</td></tr></tbody></table>
+    </div>
+  
+    <div class="round">
+      <h3>Ronda 2 - Beneficio: aceptar o rechazar la orden</h3>
+      <span class="scenario">Q = 180 | w = 10 | r = 10 | p = 3.2 | F = 220</span>
+      <table class="checklist"><tbody><tr><td>□</td><td>Aceptar la orden</td><td>□</td><td>Rechazar la orden</td></tr></tbody></table>
+      <table><tbody><tr><th>L elegido</th><td class="blank"></td><th>K elegido</th><td class="blank"></td></tr><tr><th>Coste estimado</th><td class="blank"></td><th>Beneficio estimado: pQ - C</th><td class="blank"></td></tr><tr><th>Razón económica</th><td colspan="3" class="longblank"></td></tr><tr><th>Nota de ronda</th><td colspan="3" class="small">Objetivo: usar pi = pQ - C para decidir si la orden conviene; no basta con saber producir.</td></tr></tbody></table>
+    </div>
+  
+    <div class="round">
+      <h3>Ronda 3 - Isocuanta contra isocoste</h3>
+      <span class="scenario">Q = 150 | w = 10 | r = 10 | p = 4 | F = 0</span>
+      <table class="checklist"><tbody><tr><td>□</td><td>Moverse hacia más L</td><td>□</td><td>Moverse hacia más K</td><td>□</td><td>Mezcla balanceada</td></tr></tbody></table>
+      <table><tbody><tr><th>L elegido</th><td class="blank"></td><th>K elegido</th><td class="blank"></td></tr><tr><th>Coste variable</th><td class="blank"></td><th>Q esperado</th><td class="blank"></td></tr><tr><th>Cómo conectan isocuanta e isocoste</th><td colspan="3" class="longblank"></td></tr><tr><th>Nota de ronda</th><td colspan="3" class="small">Objetivo: justificar la mezcla usando isocuanta, isocoste y precios de factores.</td></tr></tbody></table>
+    </div>
+  
+    </section>
+    <section class="page compact">
+      <p class="eyebrow">Rondas 4 a 6</p>
+      <h2>Decisiones del equipo, continuación</h2>
+      
+    <div class="round">
+      <h3>Ronda 4 - Shock de precios relativos</h3>
+      <span class="scenario">Q = 150 | w = 18 | r = 7 | p = 4 | F = 0</span>
+      <table class="checklist"><tbody><tr><td>□</td><td>K/L sube</td><td>□</td><td>K/L baja</td><td>□</td><td>K/L casi igual</td></tr></tbody></table>
+      <table><tbody><tr><th>L elegido</th><td class="blank"></td><th>K elegido</th><td class="blank"></td></tr><tr><th>Nuevo K/L</th><td class="blank"></td><th>Coste estimado</th><td class="blank"></td></tr><tr><th>Intuición del cambio</th><td colspan="3" class="longblank"></td></tr><tr><th>Nota de ronda</th><td colspan="3" class="small">Objetivo: conectar precios relativos con demandas condicionadas cuando el trabajo se encarece y el capital se abarata.</td></tr></tbody></table>
+    </div>
+  
+    <div class="round">
+      <h3>Ronda 5 - Corto plazo, coste medio y escala</h3>
+      <span class="scenario">Q = 230 | w = 10 | r = 10 | p = 4 | F = 450</span>
+      <table class="checklist"><tbody><tr><td>□</td><td>Aceptar escala</td><td>□</td><td>Rechazar por CMe</td><td>□</td><td>Recalcular CMe</td></tr></tbody></table>
+      <table><tbody><tr><th>L elegido</th><td class="blank"></td><th>K elegido</th><td class="blank"></td></tr><tr><th>Coste total</th><td class="blank"></td><th>CMe estimado</th><td class="blank"></td></tr><tr><th>Decisión final y razón</th><td colspan="3" class="longblank"></td></tr><tr><th>Nota de ronda</th><td colspan="3" class="small">Objetivo: observar cómo cambian C*, CMe*, beneficio y la ventaja de ajustar ambos factores cuando se reparte un coste fijo.</td></tr></tbody></table>
+    </div>
+  
+    <div class="round">
+      <h3>Ronda 6 - Reveal y formalización</h3>
+      <span class="scenario">Q = 150 | w = 10 | r = 10 | p = 4 | F = 0</span>
+      
+      <table><tbody><tr><th>Función revelada por el profesor</th><td colspan="3" class="blank"></td></tr><tr><th>¿Qué se acercó a nuestra hipótesis inicial?</th><td colspan="3" class="longblank"></td></tr><tr><th>¿Qué error conceptual corregimos?</th><td colspan="3" class="longblank"></td></tr><tr><th>Nota de ronda</th><td colspan="3" class="small">Esta ronda no es competitiva. El profesor pasa a Admin mode y revela las fórmulas oficiales.</td></tr></tbody></table>
+    </div>
+  
+    </section>
+  </main>
+</body>
+</html>

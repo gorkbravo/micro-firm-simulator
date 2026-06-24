@@ -8,6 +8,7 @@ Interactive teaching activity for Microeconomics I, built around Varian-style fi
 - `index.html`: same current simulator, kept in sync so GitHub Pages/root opening uses the right version.
 - `docs/guion-operativo.md`: classroom flow, timing, round mechanics, scoring rules, debrief prompts, and pre-class checklist.
 - `materials/`: source lecture presentations used to align the rounds.
+- `materials/student_printables/`: print-ready student booklets and reusable decision-sheet template, with editable HTML sources and generated PDFs.
 - `AGENTS.md`: orientation and editing guide for future coding agents.
 
 ## Classroom Flow
